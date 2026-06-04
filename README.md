@@ -10,6 +10,7 @@ rails-sandbox の GraphQL API を Apollo Client で取得・表示する Next.js
 
 ```bash
 npm install
+npm run codegen  # バックエンド起動後に型を生成
 npm run dev
 ```
 
