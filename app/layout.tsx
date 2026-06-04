@@ -1,4 +1,5 @@
-import { ApolloProvider } from "@/components/ApolloProvider";
+import { Providers } from "@/components/Providers";
+import "smarthr-ui/smarthr-ui.css";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <ApolloProvider>{children}</ApolloProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
