@@ -6,6 +6,8 @@
 | Apollo Client 4 | GraphQL クライアント |
 | TypeScript | 型安全 |
 | graphql-codegen | GraphQL 型の自動生成 |
+| smarthr-ui | UI コンポーネントライブラリ |
+| styled-components | smarthr-ui の peer dependency |
 
 ## ディレクトリ構成
 
@@ -24,3 +26,9 @@ lib/
 - GraphQL エンドポイント: `http://localhost:8080/graphql`
 - GraphQL クエリの型は `graphql-codegen`（`npm run codegen`）で自動生成し `lib/gql/` に出力する。手動型定義は書かない
 - ページネーションのマージは `fetchMore` の `updateQuery` ではなく、`lib/apollo-client.ts` の `typePolicies` に `merge` 関数として定義する
+
+## smarthr-ui
+
+- CSS は `app/layout.tsx` で `import "smarthr-ui/smarthr-ui.css"` をインポートする
+- `ThemeProvider`・`IntlProvider` は `components/Providers.tsx` でまとめて設定する
+- Table は `<Table>` + ネイティブ `<thead>/<tbody>/<tr>` + `<Th>/<Td>` の組み合わせで使う（`TableHead` 等は存在しない）

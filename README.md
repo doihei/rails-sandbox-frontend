@@ -4,7 +4,8 @@ rails-sandbox の GraphQL API を Apollo Client で取得・表示する Next.js
 
 ## 前提条件
 
-バックエンドが `localhost:8080` で起動していること（`cd ../rails-sandbox && docker compose up`）。
+- Node.js 18 以上 / React 19
+- バックエンドが `localhost:8080` で起動していること（`cd ../rails-sandbox && docker compose up`）。
 
 ## 起動
 
