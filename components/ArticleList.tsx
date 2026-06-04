@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@apollo/client/react";
-import { ARTICLES_QUERY, ArticlesQueryResult } from "@/lib/queries/articles";
+import { ARTICLES_QUERY } from "@/lib/queries/articles";
 
 export function ArticleList() {
-  const { data, loading, error, fetchMore } = useQuery<ArticlesQueryResult>(
+  const { data, loading, error, fetchMore } = useQuery(
     ARTICLES_QUERY,
     { variables: { first: 10 } }
   );

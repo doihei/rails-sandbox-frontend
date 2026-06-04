@@ -1,36 +1,6 @@
-import { gql } from "@apollo/client";
+import { gql } from "@/lib/gql";
 
-export type Tag = {
-  id: string;
-  name: string;
-};
-
-export type User = {
-  name: string | null;
-  email: string;
-};
-
-export type Article = {
-  id: string;
-  title: string;
-  body: string;
-  status: string;
-  createdAt: string;
-  user: User;
-  tags: Tag[];
-};
-
-export type ArticlesQueryResult = {
-  articles: {
-    nodes: Article[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string | null;
-    };
-  };
-};
-
-export const ARTICLES_QUERY = gql`
+export const ARTICLES_QUERY = gql(`
   query GetArticles($first: Int, $after: String) {
     articles(first: $first, after: $after) {
       nodes {
@@ -54,4 +24,4 @@ export const ARTICLES_QUERY = gql`
       }
     }
   }
-`;
+`);
