@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^4.2.0",
@@ -19,6 +20,10 @@
     "postcss": "^8.5.10"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^7.1.2",
+    "@graphql-codegen/client-preset": "^6.0.1",
+    "@graphql-codegen/typescript": "^6.0.2",
+    "@graphql-codegen/typescript-operations": "^6.0.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
