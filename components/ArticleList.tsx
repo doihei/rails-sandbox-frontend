@@ -13,7 +13,8 @@ export function ArticleList() {
   if (error)   return <p>エラー: {error.message}</p>;
   if (!data)   return null;
 
-  const { nodes, pageInfo } = data.articles;
+  const nodes = (data.articles.nodes ?? []).filter((a): a is NonNullable<typeof a> => a !== null);
+  const { pageInfo } = data.articles;
 
   return (
     <div>
@@ -71,8 +72,8 @@ export function ArticleList() {
                   articles: {
                     ...fetchMoreResult.articles,
                     nodes: [
-                      ...prev.articles.nodes,
-                      ...fetchMoreResult.articles.nodes,
+                      ...(prev.articles.nodes ?? []),
+                      ...(fetchMoreResult.articles.nodes ?? []),
                     ],
                   },
                 };
