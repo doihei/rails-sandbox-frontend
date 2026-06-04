@@ -23,3 +23,4 @@ lib/
 - React hooks（useQuery 等）は `@apollo/client/react` からインポートする（v4 で分離）
 - GraphQL エンドポイント: `http://localhost:8080/graphql`
 - GraphQL クエリの型は `graphql-codegen`（`npm run codegen`）で自動生成し `lib/gql/` に出力する。手動型定義は書かない
+- ページネーションのマージは `fetchMore` の `updateQuery` ではなく、`lib/apollo-client.ts` の `typePolicies` に `merge` 関数として定義する
