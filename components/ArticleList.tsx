@@ -66,18 +66,6 @@ export function ArticleList() {
           onClick={() =>
             fetchMore({
               variables: { after: pageInfo.endCursor },
-              updateQuery(prev, { fetchMoreResult }) {
-                if (!fetchMoreResult) return prev;
-                return {
-                  articles: {
-                    ...fetchMoreResult.articles,
-                    nodes: [
-                      ...(prev.articles.nodes ?? []),
-                      ...(fetchMoreResult.articles.nodes ?? []),
-                    ],
-                  },
-                };
-              },
             })
           }
           style={{

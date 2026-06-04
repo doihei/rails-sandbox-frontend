@@ -6,5 +6,23 @@ const httpLink = new HttpLink({
 
 export const apolloClient = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          articles: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              const existingNodes = existing?.nodes ?? [];
+              const incomingNodes = incoming?.nodes ?? [];
+              return {
+                ...incoming,
+                nodes: [...existingNodes, ...incomingNodes],
+              };
+            },
+          },
+        },
+      },
+    },
+  }),
 });
