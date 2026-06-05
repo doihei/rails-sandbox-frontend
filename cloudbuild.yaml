@@ -1,0 +1,20 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_GRAPHQL_ENDPOINT=${_GRAPHQL_ENDPOINT}'
+      - '-t'
+      - '${_IMAGE}:${_SHA}'
+      - '-t'
+      - '${_IMAGE}:latest'
+      - '.'
+
+substitutions:
+  _IMAGE: asia-northeast1-docker.pkg.dev/rails-sandbox-learn/rails-sandbox/front
+  _SHA: ''            # 必ず --substitutions で渡すこと
+  _GRAPHQL_ENDPOINT: ''  # 必ず --substitutions で渡すこと
+
+images:
+  - '${_IMAGE}:${_SHA}'
+  - '${_IMAGE}:latest'
