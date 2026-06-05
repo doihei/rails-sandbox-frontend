@@ -19,6 +19,17 @@ npm run dev
 
 http://localhost:3000
 
+## Docker で起動
+
+```bash
+docker build \
+  --build-arg NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://localhost:8080/graphql \
+  -t rails-sandbox-front .
+docker run -p 3000:3000 rails-sandbox-front
+```
+
+http://localhost:3000
+
 ## テスト
 
 ```bash
