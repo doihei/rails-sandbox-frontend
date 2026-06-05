@@ -12,6 +12,11 @@ paths:
 - テストファイルは `tests/<ディレクトリ名>/` に配置する（本体と同階層には置かない）
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
 
+## コンポーネントのレンダリング
+
+- smarthr-ui コンポーネントを含むテストは `IntlProvider`（`locale="ja"`）+ `ThemeProvider`（`createTheme()`）でラップする
+- 本番の `components/Providers.tsx` は Apollo を含むためテストでは使わず、テスト用のラップヘルパーを各テストで用意する
+
 ## Apollo Client のモック
 
 - `MockedProvider` は `@apollo/client/testing/react` からインポートする（v4 で分離）

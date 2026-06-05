@@ -1,5 +1,7 @@
 # rails-sandbox-front
 
+[![Test](https://github.com/doihei/rails-sandbox-front/actions/workflows/test.yml/badge.svg)](https://github.com/doihei/rails-sandbox-front/actions/workflows/test.yml)
+
 rails-sandbox の GraphQL API を Apollo Client で取得・表示する Next.js フロントエンド。
 
 ## 前提条件
