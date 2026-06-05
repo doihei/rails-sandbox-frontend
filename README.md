@@ -30,6 +30,19 @@ docker run -p 3000:3000 rails-sandbox-front
 
 http://localhost:3000
 
+## GCP Cloud Run へのデプロイ
+
+`cloudbuild.yaml` を使って Cloud Build でビルドする。`NEXT_PUBLIC_GRAPHQL_ENDPOINT` はビルド時に注入する必要がある（Next.js の `NEXT_PUBLIC_` 変数はビルド時に埋め込まれるため、実行時環境変数は効かない）。
+
+```bash
+gcloud builds submit --config=cloudbuild.yaml \
+  --project=<PROJECT_ID> \
+  --substitutions=_SHA=$(git rev-parse --short HEAD),_GRAPHQL_ENDPOINT=<API_URL>/graphql \
+  .
+```
+
+通常は `rails-sandbox-infra/deploy.sh` が API URL の取得も含めて一括実行する。
+
 ## テスト
 
 ```bash
