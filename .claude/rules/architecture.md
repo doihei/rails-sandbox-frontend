@@ -8,6 +8,7 @@
 | graphql-codegen | GraphQL 型の自動生成 |
 | smarthr-ui | UI コンポーネントライブラリ |
 | styled-components | smarthr-ui の peer dependency |
+| Vitest + Testing Library | ユニットテスト |
 
 ## ディレクトリ構成
 
@@ -18,6 +19,8 @@ lib/
   apollo-client.ts      # Apollo Client 初期設定
   gql/                  # graphql-codegen が生成する型・gql タグ（自動生成）
   queries/              # GraphQL クエリ定義（gql タグは lib/gql からインポート）
+tests/
+  components/           # コンポーネントのテスト
 ```
 
 ## Apollo Client
