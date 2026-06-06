@@ -1,13 +1,13 @@
-# rails-sandbox-front
+# rails-sandbox-frontend
 
-[![Test](https://github.com/doihei/rails-sandbox-front/actions/workflows/test.yml/badge.svg)](https://github.com/doihei/rails-sandbox-front/actions/workflows/test.yml)
+[![Test](https://github.com/doihei/rails-sandbox-frontend/actions/workflows/test.yml/badge.svg)](https://github.com/doihei/rails-sandbox-frontend/actions/workflows/test.yml)
 
-rails-sandbox の GraphQL API を Apollo Client で取得・表示する Next.js フロントエンド。
+rails-sandbox-backend の GraphQL API を Apollo Client で取得・表示する Next.js フロントエンド。
 
 ## 前提条件
 
 - Node.js 22 以上 / React 19
-- バックエンドが `localhost:8080` で起動していること（`cd ../rails-sandbox && docker compose up`）。
+- バックエンドが `localhost:8080` で起動していること（`cd ../rails-sandbox-backend && docker compose up`）。
 
 ## 起動
 
@@ -24,8 +24,8 @@ http://localhost:3000
 ```bash
 docker build \
   --build-arg NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://localhost:8080/graphql \
-  -t rails-sandbox-front .
-docker run -p 3000:3000 rails-sandbox-front
+  -t rails-sandbox-frontend .
+docker run -p 3000:3000 rails-sandbox-frontend
 ```
 
 http://localhost:3000
