@@ -1,0 +1,65 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+  "editor.rulers": [80, 120],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // TS/TSX は VS Code 組み込みフォーマッタを使用（Prettier 未導入）
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+
+  // プロジェクトの TypeScript SDK を使用（Next.js プラグイン対応）
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // ESLint
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.workingDirectories": ["."],
+
+  // GraphQL IntelliSense（codegen.ts をスキーマソースとして参照）
+  "graphql-config.load.rootDir": ".",
+
+  // エクスプローラーから除外（自動生成・ビルド成果物）
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/tsconfig.tsbuildinfo": true
+  },
+
+  // 検索から除外（自動生成コードは検索対象外）
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/lib/gql": true,
+    "**/*.lock": true,
+    "**/tsconfig.tsbuildinfo": true
+  },
+
+  "gitlens.codeLens.enabled": true
+}

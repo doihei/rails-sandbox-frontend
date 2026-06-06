@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    // ESLint（next/core-web-vitals ルール + auto-fix）
+    "dbaeumer.vscode-eslint",
+    // GraphQL IntelliSense（クエリ補完・型チェック）
+    "GraphQL.vscode-graphql",
+    // GraphQL 構文ハイライト（TS テンプレートリテラル内の gql も対象）
+    "GraphQL.vscode-graphql-syntax",
+    // Vitest テストエクスプローラー（run/debug をエディタ上で実行）
+    "vitest.explorer",
+    // styled-components CSS-in-JS ハイライト・補完
+    "styled-components.vscode-styled-components",
+    // TypeScript Nightly（最新の TS 言語サービスで補完・型チェックを強化）
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
