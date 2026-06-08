@@ -8,6 +8,7 @@ rails-sandbox-backend の GraphQL API を Apollo Client で取得・表示する
 
 - Node.js 22 以上 / React 19
 - バックエンドが `localhost:8080` で起動していること（`cd ../rails-sandbox-backend && docker compose up`）。
+- ログイン機能あり。初期ユーザーはバックエンドの `db/seeds.rb` を参照。
 
 ## 起動
 

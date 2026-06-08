@@ -16,6 +16,7 @@ paths:
 
 ### 環境変数
 - `NEXT_PUBLIC_GRAPHQL_ENDPOINT` — GraphQL エンドポイント（デフォルト: `http://localhost:8080/graphql`）
+- `GRAPHQL_ENDPOINT_SERVER` — Server Action 用 GraphQL エンドポイント。コンテナ内からは `localhost` がコンテナ自身を指すため `http://host.docker.internal:8080/graphql` を設定する
 - `WATCHPACK_POLLING=true` — Docker 上でホットリロードを有効にするための設定
 
 ### ホットリロードについて
