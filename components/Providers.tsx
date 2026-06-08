@@ -1,20 +1,27 @@
 "use client";
 
-import { ApolloProvider as BaseApolloProvider } from "@apollo/client/react";
+import { ApolloProvider } from "@apollo/client/react";
 import { ThemeProvider, createTheme } from "smarthr-ui";
+import { locale as jaMessages } from "smarthr-ui/lib/intl/locales/ja";
 import { IntlProvider } from "react-intl";
-import { apolloClient } from "@/lib/apollo-client";
+import { createApolloClient } from "@/lib/apollo-client";
+import { useMemo } from "react";
 
 const theme = createTheme();
 
-export function Providers({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode;
+  token?: string;
+};
+
+export function Providers({ children, token }: Props) {
+  const client = useMemo(() => createApolloClient(token), [token]);
+
   return (
-    <IntlProvider locale="ja">
-      <BaseApolloProvider client={apolloClient}>
-        <ThemeProvider theme={theme}>
-          {children}
-        </ThemeProvider>
-      </BaseApolloProvider>
-    </IntlProvider>
+    <ThemeProvider theme={theme}>
+      <IntlProvider locale="ja" messages={jaMessages}>
+        <ApolloProvider client={client}>{children}</ApolloProvider>
+      </IntlProvider>
+    </ThemeProvider>
   );
 }
