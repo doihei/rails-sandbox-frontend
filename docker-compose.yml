@@ -12,6 +12,7 @@ services:
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:8080/graphql
+      GRAPHQL_ENDPOINT_SERVER: http://host.docker.internal:8080/graphql
       WATCHPACK_POLLING: "true"
     extra_hosts:
       - "host.docker.internal:host-gateway"
