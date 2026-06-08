@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // graphql-codegen の自動生成ファイル
+    "lib/gql/**",
   ]),
 ]);
 
