@@ -21,3 +21,6 @@ paths:
 
 ### ホットリロードについて
 Docker 上では `WATCHPACK_POLLING=true` が必須。これがないとファイル変更が検知されない。
+
+### package.json を更新した場合
+コンテナ起動時（`npm run dev` 前）に自動で `npm install` が実行されるため、`make down && make up` だけで新しい依存が反映される。初回ビルド後は `docker compose build` は不要。

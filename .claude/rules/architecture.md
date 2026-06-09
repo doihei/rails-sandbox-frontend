@@ -9,6 +9,7 @@
 | smarthr-ui | UI コンポーネントライブラリ |
 | styled-components | smarthr-ui の peer dependency |
 | Vitest + Testing Library | ユニットテスト |
+| react-hook-form + zod | フォームバリデーション |
 
 ## ディレクトリ構成
 
@@ -17,6 +18,8 @@ app/                    # Next.js App Router（ページ・レイアウト）
   login/                # ログインページ・Server Action
   articles/             # 記事一覧・詳細ページ
     [id]/               # 記事詳細ページ（表示・削除）
+      edit/             # 記事編集ページ
+    new/                # 記事新規作成ページ
 components/             # UI コンポーネント
 lib/
   apollo-client.ts      # Apollo Client 初期設定
@@ -44,3 +47,7 @@ tests/
 - `ThemeProvider`・`IntlProvider` は `components/Providers.tsx` でまとめて設定する
 - `IntlProvider` には `smarthr-ui/lib/intl/locales/ja` の `locale` を `messages` prop に渡すこと（未設定だと MISSING_TRANSLATION エラーが出る）
 - Table は `<Table>` + ネイティブ `<thead>/<tbody>/<tr>` + `<Th>/<Td>` の組み合わせで使う（`TableHead` 等は存在しない）
+- `FormControl` の必須ラベルは `requireText`（旧API・存在しない）ではなく `statusLabels={<StatusLabel key="required" type="red">必須</StatusLabel>}` で表示する。`statusLabels` は内部で配列化されるため `key` が必須
+- `Select` のオプションは `children` ではなく `options={[{ value, label }]}` で渡す（`label` プロパティが表示テキストになる）
+- `AnchorButton elementAs={Link}` は Client Component 内でのみ使用可能。Server Component から関数を props として渡すと Next.js がエラーを出す
+- Apollo ミューテーションのレスポンスには「更新したフィールドをすべて含める」こと。含めないフィールドはミューテーション後もキャッシュが更新されず、画面に古い値が残る
