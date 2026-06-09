@@ -15,7 +15,8 @@
 ```
 app/                    # Next.js App Router（ページ・レイアウト）
   login/                # ログインページ・Server Action
-  articles/             # 記事一覧ページ
+  articles/             # 記事一覧・詳細ページ
+    [id]/               # 記事詳細ページ（表示・削除）
 components/             # UI コンポーネント
 lib/
   apollo-client.ts      # Apollo Client 初期設定
@@ -35,6 +36,7 @@ tests/
 - トークンは `lib/auth.ts` の `getToken()` で Cookie から取得し、`app/layout.tsx` が Server Component として読み込んで `Providers` に渡す
 - GraphQL クエリの型は `graphql-codegen`（`npm run codegen`）で自動生成し `lib/gql/` に出力する。手動型定義は書かない
 - ページネーションのマージは `fetchMore` の `updateQuery` ではなく、`lib/apollo-client.ts` の `typePolicies` に `merge` 関数として定義する
+- Rails の `ISO8601DateTime` / `ISO8601Date` スカラーは `string` にマッピング済み（`codegen.ts` の `scalars` を参照）。新しい日時スカラーを追加した場合も同様に設定すること
 
 ## smarthr-ui
 
