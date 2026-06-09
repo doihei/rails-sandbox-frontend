@@ -34,3 +34,41 @@ export const DELETE_ARTICLE = gql(`
     }
   }
 `);
+
+export const UPDATE_ARTICLE = gql(`
+  mutation UpdateArticle(
+    $id: ID!
+    $title: String
+    $body: String
+    $status: String
+    $lockVersion: Int
+  ) {
+    updateArticle(input: {
+      id: $id
+      title: $title
+      body: $body
+      status: $status
+      lockVersion: $lockVersion
+    }) {
+      article {
+        id
+        title
+        body
+        status
+        lockVersion
+      }
+      errors
+    }
+  }
+`);
+
+export const CREATE_ARTICLE = gql(`
+  mutation CreateArticle($title: String!, $body: String!) {
+    createArticle(input: { title: $title, body: $body }) {
+      article {
+        id
+      }
+      errors
+    }
+  }
+`);
