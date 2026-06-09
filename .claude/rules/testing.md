@@ -21,6 +21,8 @@ paths:
 
 - `MockedProvider` は `@apollo/client/testing/react` からインポートする（v4 で分離）
 - `addTypename` prop は不要（v4 の MockLink が内部で両側を正規化してマッチングするため）
+- `mocks` 配列の型は `MockLink.MockedResponse[]` を使う（`any[]` は型エラー、旧 `MockedResponse` は deprecated）
+  - `MockLink` は `@apollo/client/testing` からインポートする
 
 ## jsdom の補完
 
