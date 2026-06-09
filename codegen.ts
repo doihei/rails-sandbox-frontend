@@ -9,6 +9,12 @@ const config: CodegenConfig = {
       presetConfig: {
         gqlTagName: "gql",
       },
+      config: {
+        scalars: {
+          ISO8601DateTime: "string",
+          ISO8601Date: "string",
+        },
+      },
     },
   },
 };
