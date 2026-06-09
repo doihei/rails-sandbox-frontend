@@ -3,6 +3,7 @@
 import { useQuery } from "@apollo/client/react";
 import { Table, Th, Td, Button, Text, StatusLabel } from "smarthr-ui";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
+import Link from "next/link";
 
 export function ArticleList() {
   const { data, loading, error, fetchMore } = useQuery(
@@ -33,7 +34,11 @@ export function ArticleList() {
         <tbody>
           {nodes.map((article) => (
             <tr key={article.id}>
-              <Td>{article.title}</Td>
+              <Td>
+                <Link href={`/articles/${article.id}`} style={{ color: "inherit" }}>
+                  {article.title}
+                </Link>
+              </Td>
               <Td>
                 <StatusLabel type={article.status === "published" ? "green" : "grey"}>
                   {article.status}
