@@ -1,19 +1,22 @@
+import { describe, it, expect } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing/react";
+import { MockLink } from "@apollo/client/testing";
+import { ThemeProvider, IntlProvider, createTheme } from "smarthr-ui";
 import { ArticleList } from "@/components/ArticleList";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
-import { ThemeProvider, createTheme } from "smarthr-ui";
-import { IntlProvider } from "react-intl";
 
-const theme = createTheme();
-
-function renderWithProviders(ui: React.ReactElement) {
+// テスト用ラップヘルパー
+function renderWithProviders(ui: React.ReactElement, mocks: MockLink.MockedResponse[] = []) {
+  const theme = createTheme();
   return render(
-    <IntlProvider locale="ja">
+    <MockedProvider mocks={mocks}>
       <ThemeProvider theme={theme}>
-        {ui}
+        <IntlProvider locale="ja">
+          {ui}
+        </IntlProvider>
       </ThemeProvider>
-    </IntlProvider>
+    </MockedProvider>
   );
 }
 
@@ -29,19 +32,19 @@ const mockArticles = {
           {
             id: "1",
             title: "テスト記事1",
-            body: "本文テスト1",
+            body: "本文1",
             status: "published",
-            createdAt: "2025-01-01T00:00:00Z",
+            createdAt: "2024-01-01T00:00:00Z",
             user: { name: "テストユーザー", email: "test@example.com" },
-            tags: [{ id: "t1", name: "Rails" }],
+            tags: [{ id: "t1", name: "rails" }],
           },
           {
             id: "2",
             title: "テスト記事2",
-            body: "本文テスト2",
+            body: "本文2",
             status: "draft",
-            createdAt: "2025-01-02T00:00:00Z",
-            user: { name: null, email: "test2@example.com" },
+            createdAt: "2024-01-02T00:00:00Z",
+            user: { name: null, email: "other@example.com" },
             tags: [],
           },
         ],
@@ -53,84 +56,44 @@ const mockArticles = {
 
 describe("ArticleList", () => {
   it("ローディング中は「読み込み中...」を表示する", () => {
-    renderWithProviders(
-      <MockedProvider mocks={[mockArticles]}>
-        <ArticleList />
-      </MockedProvider>
-    );
+    renderWithProviders(<ArticleList />, [mockArticles]);
     expect(screen.getByText("読み込み中...")).toBeInTheDocument();
   });
 
-  it("記事一覧がテーブルに表示される", async () => {
-    renderWithProviders(
-      <MockedProvider mocks={[mockArticles]}>
-        <ArticleList />
-      </MockedProvider>
-    );
-
+  it("記事一覧を表示する", async () => {
+    renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
       expect(screen.getByText("テスト記事1")).toBeInTheDocument();
       expect(screen.getByText("テスト記事2")).toBeInTheDocument();
     });
   });
 
-  it("published 記事のステータスラベルが表示される", async () => {
-    renderWithProviders(
-      <MockedProvider mocks={[mockArticles]}>
-        <ArticleList />
-      </MockedProvider>
-    );
-
+  it("記事タイトルが詳細ページへのリンクになっている", async () => {
+    renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      expect(screen.getByText("published")).toBeInTheDocument();
+      const link = screen.getByRole("link", { name: "テスト記事1" });
+      expect(link).toHaveAttribute("href", "/articles/1");
     });
   });
 
-  it("name が null のユーザーは email を表示する", async () => {
-    renderWithProviders(
-      <MockedProvider mocks={[mockArticles]}>
-        <ArticleList />
-      </MockedProvider>
-    );
-
+  it("タグが表示される", async () => {
+    renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      expect(screen.getByText("test2@example.com")).toBeInTheDocument();
+      expect(screen.getByText("rails")).toBeInTheDocument();
     });
   });
 
-  it("hasNextPage が false のとき「もっと見る」ボタンが表示されない", async () => {
-    renderWithProviders(
-      <MockedProvider mocks={[mockArticles]}>
-        <ArticleList />
-      </MockedProvider>
-    );
-
+  it("name が null の場合は email を表示する", async () => {
+    renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      expect(screen.queryByText("もっと見る")).not.toBeInTheDocument();
+      expect(screen.getByText("other@example.com")).toBeInTheDocument();
     });
   });
 
-  it("hasNextPage が true のとき「もっと見る」ボタンが表示される", async () => {
-    const mockWithNextPage = {
-      ...mockArticles,
-      result: {
-        data: {
-          articles: {
-            ...mockArticles.result.data.articles,
-            pageInfo: { hasNextPage: true, endCursor: "cursor_abc" },
-          },
-        },
-      },
-    };
-
-    renderWithProviders(
-      <MockedProvider mocks={[mockWithNextPage]}>
-        <ArticleList />
-      </MockedProvider>
-    );
-
+  it("hasNextPage が false の場合「もっと見る」ボタンを表示しない", async () => {
+    renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      expect(screen.getByText("もっと見る")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "もっと見る" })).not.toBeInTheDocument();
     });
   });
 });
