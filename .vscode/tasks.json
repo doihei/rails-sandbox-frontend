@@ -39,6 +39,17 @@
       "problemMatcher": []
     },
     {
+      "label": "Playwright: a11y tests",
+      "type": "shell",
+      "command": "npm run test:a11y",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "ESLint: Lint",
       "type": "shell",
       "command": "npm run lint",

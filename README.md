@@ -46,7 +46,24 @@ gcloud builds submit --config=cloudbuild.yaml \
 
 ## テスト
 
+### ユニットテスト（Vitest）
+
 ```bash
 npm test          # ウォッチモード
 npm run test:run  # CI 向け（1回実行）
+```
+
+### a11y テスト（Playwright）
+
+初回のみ、ブラウザをインストールする：
+
+```bash
+npx playwright install chromium
+```
+
+アプリを起動した状態で実行する（バックエンド + フロントエンド両方が必要）：
+
+```bash
+npm run dev       # 別ターミナルで起動
+npm run test:a11y
 ```
