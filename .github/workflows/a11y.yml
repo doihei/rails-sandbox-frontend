@@ -36,11 +36,14 @@ jobs:
         env:
           NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:8080/graphql
 
+      - name: Start mock GraphQL server
+        run: node tests/graphql-mock.mjs &
+
       - name: Start app
         run: npm run start &
 
-      - name: Wait for app
-        run: npx wait-on http://localhost:3000 --timeout 60000
+      - name: Wait for app and mock server
+        run: npx wait-on http://localhost:3000 tcp:8080 --timeout 60000
 
       - name: Run a11y tests
         run: npx playwright test --project=a11y
