@@ -67,9 +67,20 @@ const server = http.createServer((req, res) => {
   req.on('data', (chunk) => (body += chunk))
   req.on('end', () => {
     try {
-      const { query } = JSON.parse(body)
-      const match = query.match(/(?:query|mutation)\s+(\w+)/)
-      const operationName = match?.[1]
+      const { query, operationName: opNameInBody } = JSON.parse(body)
+
+      // 1. リクエストボディの operationName フィールドを優先
+      // 2. クエリ文字列から名前付きオペレーション（query Foo / mutation Foo）を抽出
+      // 3. 匿名オペレーションはルートフィールド名で判定（actions.ts の createSession など）
+      let operationName = opNameInBody
+      if (!operationName) {
+        const match = query.match(/(?:query|mutation)\s+(\w+)/)
+        operationName = match?.[1]
+      }
+      if (!operationName) {
+        const fieldMatch = query.match(/[{(]\s*(\w+)\s*[({]/)
+        operationName = fieldMatch?.[1]
+      }
 
       const resolver = operationName && resolvers[operationName]
       res.writeHead(200)
