@@ -13,6 +13,7 @@ paths:
 - テストフレームワーク: Vitest + @testing-library/react
 - テストファイルは `tests/<ディレクトリ名>/` に配置する（本体と同階層には置かない）
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
+- Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` を設定済み。新たに Playwright テストを追加する場合も同ディレクトリに配置すること
 
 ## コンポーネントのレンダリング
 
