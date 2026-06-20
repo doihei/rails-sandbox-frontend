@@ -1,7 +1,7 @@
 "use client";
 
 import { ArticleList } from "@/components/ArticleList";
-import { AnchorButton } from "smarthr-ui";
+import { AnchorButton, Heading } from "smarthr-ui";
 import Link from "next/link";
 
 export default function ArticlesPage() {
@@ -15,9 +15,7 @@ export default function ArticlesPage() {
           marginBottom: "24px",
         }}
       >
-        <h1 style={{ fontSize: 24, fontWeight: 500, marginBottom: 24 }}>
-          記事一覧
-        </h1>
+        <Heading>記事一覧</Heading>
         <AnchorButton elementAs={Link} href="/articles/new" variant="primary">
             新規作成
         </AnchorButton>

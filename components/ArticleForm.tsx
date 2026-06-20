@@ -100,11 +100,18 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap="L">
-        {errors.root && (
-          <NotificationBar type="error" role="alert">
-            {errors.root.message}
-          </NotificationBar>
-        )}
+        {/* 常にDOMに存在させ、中身の変化を aria-live で通知する */}
+        <div
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          {errors.root && (
+            <NotificationBar type="error">
+              {errors.root.message}
+            </NotificationBar>
+          )}
+        </div>
 
         <FormControl
           label={{ text: "タイトル", htmlFor: "title" }}

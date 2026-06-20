@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -29,6 +29,8 @@ export default function ArticleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  // useRef を追加してフォーカスを戻す
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
   const { data, loading, error } = useQuery(GET_ARTICLE, {
     variables: { id },
@@ -68,6 +70,11 @@ export default function ArticleDetailPage() {
       },
     });
   };
+
+  const handleClose = () => {
+    setDeleteDialogOpen(false)
+    setTimeout(() => deleteButtonRef.current?.focus(), 0) // フォーカスを削除ボタンに戻す
+  }
 
   return (
     <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 16px" }}>
@@ -121,7 +128,12 @@ export default function ArticleDetailPage() {
               <AnchorButton elementAs={Link} href={`/articles/${article.id}/edit`} variant="secondary">
                 編集
               </AnchorButton>
-              <Button variant="danger" onClick={() => setDeleteDialogOpen(true)} loading={deleting}>
+              <Button
+                ref={deleteButtonRef}
+                variant="danger"
+                onClick={() => setDeleteDialogOpen(true)}
+                loading={deleting}
+              >
                 削除
               </Button>
             </Cluster>
@@ -131,7 +143,7 @@ export default function ArticleDetailPage() {
 
       <ControlledActionDialog
         isOpen={deleteDialogOpen}
-        onClickClose={() => setDeleteDialogOpen(false)}
+        onClickClose={handleClose}
         heading="記事の削除"
         actionButton={{ text: "削除する", theme: "danger", disabled: deleting }}
         closeButton={{ text: "キャンセル", disabled: deleting }}
