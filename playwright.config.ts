@@ -25,6 +25,6 @@ export default defineConfig({
       },
     },
   ],
-  // スクリーンショットの保存先（プロジェクト別に管理）
-  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}-{projectName}{ext}',
+  // スクリーンショットの保存先（プロジェクト・OS 別に管理してクロスプラットフォームの差分を防ぐ）
+  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}-{projectName}-{platform}{ext}',
 })
