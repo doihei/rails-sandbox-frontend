@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { MockedProvider } from "@apollo/client/testing/react";
+import { waitFor, expect } from "storybook/test";
 import { ArticleList } from "@/components/ArticleList";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
-import { within, waitFor, expect } from "storybook/test";
 
-// ── テスト用モックデータ ──────────────────────────────
 const mockNodes = [
   {
     id: "1",
@@ -39,7 +38,7 @@ const successMock = {
       },
     },
   },
-}
+};
 
 const hasNextPageMock = {
   request: {
@@ -54,16 +53,15 @@ const hasNextPageMock = {
       },
     },
   },
-}
-
-// ── Meta ───────────────────────────────────────────────
-const meta: Meta<typeof ArticleList> = {
-  title: "Components/ArticleList",
-  component: ArticleList,
 };
-export default meta;
 
-type Story = StoryObj<typeof ArticleList>;
+const meta = {
+  component: ArticleList,
+  tags: ["ai-generated"],
+} satisfies Meta<typeof ArticleList>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 // ── Story 1: 通常表示 ──────────────────────────────────
 export const Default: Story = {
@@ -74,23 +72,16 @@ export const Default: Story = {
       </MockedProvider>
     ),
   ],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // ローディング → データ表示の遷移を確認
+  play: async ({ canvas }) => {
     await waitFor(() =>
-      expect(canvas.getByText("Railsで学ぶGraphQL")).toBeInTheDocument()
+      expect(canvas.getByText("Railsで学ぶGraphQL")).toBeVisible()
     );
 
-    // タイトルがリンクになっている
     const link = canvas.getByRole("link", { name: "Railsで学ぶGraphQL" });
-    expect(link).toHaveAttribute("href", "/articles/1");
+    expect(link.getAttribute("href")).toBe("/articles/1");
 
-    // タグが表示される
-    expect(canvas.getByText("rails")).toBeInTheDocument();
-
-    // name が null の場合は email を表示
-    expect(canvas.getByText("yamada@example.com")).toBeInTheDocument();
+    expect(canvas.getByText("rails")).toBeVisible();
+    expect(canvas.getByText("yamada@example.com")).toBeVisible();
   },
 };
 
@@ -103,10 +94,9 @@ export const WithPagination: Story = {
       </MockedProvider>
     ),
   ],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     await waitFor(() =>
-      expect(canvas.getByRole("button", { name: "もっと見る" })).toBeInTheDocument()
+      expect(canvas.getByRole("button", { name: "もっと見る" })).toBeVisible()
     );
   },
 };
@@ -115,7 +105,7 @@ export const WithPagination: Story = {
 export const Loading: Story = {
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[{ ...successMock, delay: Infinity }]} >
+      <MockedProvider mocks={[{ ...successMock, delay: Infinity }]}>
         <Story />
       </MockedProvider>
     ),
@@ -134,10 +124,9 @@ export const WithError: Story = {
       </MockedProvider>
     ),
   ],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     await waitFor(() =>
-      expect(canvas.getByText(/エラー/)).toBeInTheDocument()
+      expect(canvas.getByText(/エラー/)).toBeVisible()
     );
   },
 };
