@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // graphql-codegen の自動生成ファイル
     "lib/gql/**",
+    // storybook ビルド成果物
+    "storybook-static/**",
   ]),
   ...storybook.configs["flat/recommended"]
 ]);
