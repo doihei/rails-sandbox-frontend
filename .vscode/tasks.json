@@ -50,6 +50,41 @@
       "problemMatcher": []
     },
     {
+      "label": "Storybook: Dev server",
+      "type": "shell",
+      "command": "npm run storybook",
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": ".",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting Storybook",
+          "endsPattern": "Storybook \\d+\\.\\d+\\.\\d+ for"
+        }
+      }
+    },
+    {
+      "label": "Storybook: Build",
+      "type": "shell",
+      "command": "npm run build-storybook",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "ESLint: Lint",
       "type": "shell",
       "command": "npm run lint",
