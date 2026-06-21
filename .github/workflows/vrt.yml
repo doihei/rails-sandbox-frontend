@@ -1,0 +1,52 @@
+name: VRT
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'tests/vrt/**'
+
+jobs:
+  vrt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:8080/graphql
+
+      - name: Start app
+        run: npm run start &
+
+      - name: Wait for app
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run VRT
+        run: npx playwright test --project=vrt
+
+      - name: Upload diff report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-diff-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

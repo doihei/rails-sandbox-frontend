@@ -50,6 +50,28 @@
       "problemMatcher": []
     },
     {
+      "label": "Playwright: VRT",
+      "type": "shell",
+      "command": "npm run test:vrt",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Playwright: VRT (update snapshots)",
+      "type": "shell",
+      "command": "npm run test:vrt:update",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Storybook: Dev server",
       "type": "shell",
       "command": "npm run storybook",
