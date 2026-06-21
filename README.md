@@ -97,8 +97,7 @@ npm run dev          # 別ターミナルで起動
 npm run test:vrt     # スクリーンショットを既存ベースラインと比較
 ```
 
-UI を意図的に変更した場合はベースラインを更新する：
+UI を意図的に変更した場合はベースラインを更新する。**ベースラインは Linux（CI）のみ管理するため、GitHub Actions の `workflow_dispatch` で更新すること**（ローカルの `--update-snapshots` は使わない）：
 
-```bash
-npm run test:vrt:update
-```
+1. GitHub リポジトリの **Actions** タブ → **VRT** ワークフローを選択
+2. **Run workflow** → `ベースラインを更新して自動コミットする` にチェック → **Run workflow**

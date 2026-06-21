@@ -42,10 +42,11 @@ paths:
 
 - VRT テストは `tests/vrt/` に配置し、`*.spec.ts` の拡張子を使う
 - テスト実行は `npm run test:vrt`。アプリが `http://localhost:3000` で起動している必要がある
-- ベースラインの更新は `npm run test:vrt:update`（スクリーンショットが変わった際に実行）
 - 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う（a11y と同じヘルパーを共有）
 - ビューポートは `1280×720` に固定し、アニメーションは `--force-prefers-reduced-motion` で無効化済み（`playwright.config.ts` の vrt プロジェクト設定を参照）
 - ベースライン画像は `tests/vrt/*.spec.ts-snapshots/` に保存し、git で管理する
+- **ベースラインは Linux（CI）のみ管理する**。macOS など他 OS のスナップショットはコミットしない
+- ベースラインの更新は GitHub Actions の `workflow_dispatch`（`update_snapshots: true`）で行う。ローカルの `npm run test:vrt:update` は Linux 以外では使わないこと
 
 ## jsdom の補完
 
