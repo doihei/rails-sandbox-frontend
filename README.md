@@ -44,9 +44,23 @@ gcloud builds submit --config=cloudbuild.yaml \
 
 通常は `rails-sandbox-infra/deploy.sh` が API URL の取得も含めて一括実行する。
 
+## Storybook
+
+```bash
+npm run storybook        # 開発サーバー起動（http://localhost:6006）
+npm run build-storybook  # 静的ファイルをビルド
+```
+
 ## テスト
 
-### ユニットテスト（Vitest）
+### ユニットテスト・Story テスト（Vitest）
+
+Story テストは `npm run test:run` に統合されています（Storybook 起動不要）。  
+Chromium が必要なため、初回のみインストールしてください：
+
+```bash
+npx playwright install chromium --with-deps
+```
 
 ```bash
 npm test          # ウォッチモード

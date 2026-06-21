@@ -3,6 +3,7 @@ paths:
   - "tests/**/*.test.tsx"
   - "tests/**/*.test.ts"
   - "tests/a11y/**/*.spec.ts"
+  - "stories/**/*.stories.tsx"
   - "vitest.config.ts"
   - "vitest.setup.ts"
   - "playwright.config.ts"
@@ -39,3 +40,13 @@ paths:
 
 - `smarthr-ui` の Table が `ResizeObserver` を使うため、`vitest.setup.ts` にスタブを定義済み
 - jsdom に存在しないブラウザ API が必要になった場合は同ファイルに追記する
+
+## Storybook Story
+
+- Story ファイルは `stories/<ディレクトリ名>/` に配置する（コンポーネントと同階層には置かない）
+- 型インポートは `@storybook/nextjs-vite` から行う（`@storybook/react` は v8 の旧パッケージ）
+- `expect`・`waitFor`・`fn` は `storybook/test` からインポートする（`@storybook/test` は v8）
+- `userEvent`・`canvas` は play 関数の引数から受け取る（インポート不可）
+- App Router を使うコンポーネントは `parameters.nextjs.appDirectory: true` を設定する
+- `useRouter().push` のスパイは App Router モードでは不可。送信成功の確認はボタンの disabled 解除で代替する
+- Story テストは `npm run test:run` に統合済み（Storybook 起動不要、Chromium が必要）
