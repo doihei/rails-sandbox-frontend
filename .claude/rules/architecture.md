@@ -9,6 +9,9 @@
 | smarthr-ui | UI コンポーネントライブラリ |
 | styled-components | smarthr-ui の peer dependency |
 | Vitest + Testing Library | ユニットテスト |
+| Storybook | コンポーネント開発・Story テスト |
+| Playwright + axe-core | a11y テスト |
+| Playwright | VRT（スクリーンショット回帰テスト） |
 | react-hook-form + zod | フォームバリデーション |
 
 ## ディレクトリ構成
@@ -16,6 +19,7 @@
 ```
 app/                    # Next.js App Router（ページ・レイアウト）
   login/                # ログインページ・Server Action
+  logout/               # ログアウト Server Action
   articles/             # 記事一覧・詳細ページ
     [id]/               # 記事詳細ページ（表示・削除）
       edit/             # 記事編集ページ
@@ -27,8 +31,8 @@ lib/
   gql/                  # graphql-codegen が生成する型・gql タグ（自動生成）
   queries/              # GraphQL クエリ定義（gql タグは lib/gql からインポート）
 proxy.ts                # 認証ガード（Next.js 16 proxy 規約）
-tests/
-  components/           # コンポーネントのテスト
+stories/                # Storybook Story ファイル
+tests/                  # テストファイル（詳細は .claude/rules/testing.md を参照）
 ```
 
 ## Apollo Client
