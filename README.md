@@ -81,3 +81,24 @@ npx playwright install chromium
 npm run dev       # 別ターミナルで起動
 npm run test:a11y
 ```
+
+### VRT・スクリーンショット回帰テスト（Playwright）
+
+初回のみ、ブラウザをインストールする：
+
+```bash
+npx playwright install chromium
+```
+
+アプリを起動した状態で実行する：
+
+```bash
+npm run dev          # 別ターミナルで起動
+npm run test:vrt     # スクリーンショットを既存ベースラインと比較
+```
+
+UI を意図的に変更した場合はベースラインを更新する：
+
+```bash
+npm run test:vrt:update
+```

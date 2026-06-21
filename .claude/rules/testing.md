@@ -3,6 +3,8 @@ paths:
   - "tests/**/*.test.tsx"
   - "tests/**/*.test.ts"
   - "tests/a11y/**/*.spec.ts"
+  - "tests/vrt/**/*.spec.ts"
+  - "tests/helpers/**"
   - "stories/**/*.stories.tsx"
   - "vitest.config.ts"
   - "vitest.setup.ts"
@@ -14,7 +16,7 @@ paths:
 - テストフレームワーク: Vitest + @testing-library/react
 - テストファイルは `tests/<ディレクトリ名>/` に配置する（本体と同階層には置かない）
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
-- Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` を設定済み。新たに Playwright テストを追加する場合も同ディレクトリに配置すること
+- Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` と `tests/vrt/**` を設定済み。新たに Playwright テストを追加する場合もこれらのディレクトリに配置すること
 
 ## コンポーネントのレンダリング
 
@@ -33,8 +35,17 @@ paths:
 - a11y テストは `tests/a11y/` に配置し、`*.spec.ts` の拡張子を使う
 - テスト実行は `npm run test:a11y`。アプリが `http://localhost:3000` で起動している必要がある
 - `AxeBuilder.withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])` で WCAG 2.1 AA 準拠を検査する
-- ログインが必要なページはファイル内に `login(page: Page)` ヘルパーを定義して各テスト冒頭で呼ぶ
+- 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う（例: `setupArticlesMocks`）
 - バリデーションエラーなど状態変化後も axe 検査を行い、エラー表示時の違反も確認する
+
+## VRT（Playwright スクリーンショット回帰テスト）
+
+- VRT テストは `tests/vrt/` に配置し、`*.spec.ts` の拡張子を使う
+- テスト実行は `npm run test:vrt`。アプリが `http://localhost:3000` で起動している必要がある
+- ベースラインの更新は `npm run test:vrt:update`（スクリーンショットが変わった際に実行）
+- 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う（a11y と同じヘルパーを共有）
+- ビューポートは `1280×720` に固定し、アニメーションは `--force-prefers-reduced-motion` で無効化済み（`playwright.config.ts` の vrt プロジェクト設定を参照）
+- ベースライン画像は `tests/vrt/*.spec.ts-snapshots/` に保存し、git で管理する
 
 ## jsdom の補完
 
