@@ -11,7 +11,7 @@ test('ログインページ', async ({ page }) => {
   // beforeEach で Cookie を注入しているが、/login は認証ガードがないので問題なし
   await page.goto('/login')
   await page.waitForSelector('form')
-  await expect(page).toHaveScreenshot('login.png')
+  await expect(page).toHaveScreenshot('login.png', { fullPage: true })
 })
 
 // ── 記事一覧ページ ─────────────────────────────────────
@@ -19,14 +19,14 @@ test('記事一覧ページ', async ({ page }) => {
   await page.goto('/articles')
   // テーブルが描画されるまで待つ（ローディングが消えるのを待つ）
   await page.waitForSelector('table')
-  await expect(page).toHaveScreenshot('articles-list.png')
+  await expect(page).toHaveScreenshot('articles-list.png', { fullPage: true })
 })
 
 // ── 記事作成フォーム（初期状態）───────────────────────
 test('記事作成フォーム', async ({ page }) => {
   await page.goto('/articles/new')
   await page.waitForSelector('form')
-  await expect(page).toHaveScreenshot('articles-new.png')
+  await expect(page).toHaveScreenshot('articles-new.png', { fullPage: true })
 })
 
 // ── 記事作成フォーム（バリデーションエラー状態）────────
@@ -40,7 +40,7 @@ test('記事作成フォーム バリデーションエラー', async ({ page })
   // aria-live コンテナにエラーが現れるのを待つ
   await page.waitForSelector('[role="alert"]')
 
-  await expect(page).toHaveScreenshot('articles-new-validation-error.png')
+  await expect(page).toHaveScreenshot('articles-new-validation-error.png', { fullPage: true })
 })
 
 // ── 記事詳細ページ（オーナー表示）───────────────────────
@@ -48,5 +48,5 @@ test('記事詳細ページ', async ({ page }) => {
   await page.goto('/articles/1')
   // 記事タイトルが表示されるまで待つ
   await page.waitForSelector('h1')
-  await expect(page).toHaveScreenshot('articles-detail.png')
+  await expect(page).toHaveScreenshot('articles-detail.png', { fullPage: true })
 })
