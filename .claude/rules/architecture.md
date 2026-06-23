@@ -25,6 +25,8 @@ app/                    # Next.js App Router（ページ・レイアウト）
       edit/             # 記事編集ページ
     new/                # 記事新規作成ページ
 components/             # UI コンポーネント
+  articles/             # 記事関連（ArticleForm, ArticleList）
+  comments/             # コメント関連（CommentForm, CommentList）
 lib/
   apollo-client.ts      # Apollo Client 初期設定
   auth.ts               # JWT Cookie 管理ユーティリティ
