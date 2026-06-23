@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing/react";
 import { MockLink } from "@apollo/client/testing";
 import { ThemeProvider, IntlProvider, createTheme } from "smarthr-ui";
-import { ArticleList } from "@/components/ArticleList";
+import { ArticleList } from "@/components/articles/ArticleList";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
 
 // テスト用ラップヘルパー
@@ -37,6 +37,11 @@ const mockArticles = {
             createdAt: "2024-01-01T00:00:00Z",
             user: { name: "テストユーザー", email: "test@example.com" },
             tags: [{ id: "t1", name: "rails" }],
+            comments: [
+              { id: "c1", body: "コメント1", user: { name: null, email: "yamada@example.com" }},
+              { id: "c2", body: "コメント2", user: { name: null, email: "yamada@example.com" }},
+            ],
+            commentsCount: 2,
           },
           {
             id: "2",
@@ -46,6 +51,8 @@ const mockArticles = {
             createdAt: "2024-01-02T00:00:00Z",
             user: { name: null, email: "other@example.com" },
             tags: [],
+            comments: [],
+            commentsCount: 0,
           },
         ],
         pageInfo: { hasNextPage: false, endCursor: null },
@@ -63,15 +70,15 @@ describe("ArticleList", () => {
   it("記事一覧を表示する", async () => {
     renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      expect(screen.getByText("テスト記事1")).toBeInTheDocument();
-      expect(screen.getByText("テスト記事2")).toBeInTheDocument();
+      expect(screen.getByText(/テスト記事1/)).toBeInTheDocument();
+      expect(screen.getByText(/テスト記事2/)).toBeInTheDocument();
     });
   });
 
   it("記事タイトルが詳細ページへのリンクになっている", async () => {
     renderWithProviders(<ArticleList />, [mockArticles]);
     await waitFor(() => {
-      const link = screen.getByRole("link", { name: "テスト記事1" });
+      const link = screen.getByRole("link", { name: /テスト記事1/ });
       expect(link).toHaveAttribute("href", "/articles/1");
     });
   });

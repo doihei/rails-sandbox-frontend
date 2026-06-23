@@ -1,6 +1,6 @@
 "use client";
 
-import { ArticleList } from "@/components/ArticleList";
+import { ArticleList } from "@/components/articles/ArticleList";
 import { AnchorButton, Heading } from "smarthr-ui";
 import Link from "next/link";
 

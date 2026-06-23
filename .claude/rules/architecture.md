@@ -25,6 +25,8 @@ app/                    # Next.js App Router（ページ・レイアウト）
       edit/             # 記事編集ページ
     new/                # 記事新規作成ページ
 components/             # UI コンポーネント
+  articles/             # 記事関連（ArticleForm, ArticleList）
+  comments/             # コメント関連（CommentForm, CommentList）
 lib/
   apollo-client.ts      # Apollo Client 初期設定
   auth.ts               # JWT Cookie 管理ユーティリティ
@@ -51,6 +53,13 @@ tests/                  # テストファイル（詳細は .claude/rules/testin
 - `ThemeProvider`・`IntlProvider` は `components/Providers.tsx` でまとめて設定する
 - `IntlProvider` には `smarthr-ui/lib/intl/locales/ja` の `locale` を `messages` prop に渡すこと（未設定だと MISSING_TRANSLATION エラーが出る）
 - Table は `<Table>` + ネイティブ `<thead>/<tbody>/<tr>` + `<Th>/<Td>` の組み合わせで使う（`TableHead` 等は存在しない）
+- `FormControl` の `label` は文字列または `ObjectLabelType` オブジェクトを受け取る。`htmlFor`（ラベルと入力要素の紐付け）はトップレベル prop ではなく `label` オブジェクトのプロパティとして渡す:
+  ```tsx
+  // NG: htmlFor はトップレベルに存在しない
+  <FormControl label="コメント" htmlFor="comment-body">
+  // OK
+  <FormControl label={{ text: "コメント", htmlFor: "comment-body" }}>
+  ```
 - `FormControl` の必須ラベルは `requireText`（旧API・存在しない）ではなく `statusLabels={<StatusLabel key="required" type="red">必須</StatusLabel>}` で表示する。`statusLabels` は内部で配列化されるため `key` が必須
 - `Select` のオプションは `children` ではなく `options={[{ value, label }]}` で渡す（`label` プロパティが表示テキストになる）
 - `AnchorButton elementAs={Link}` は Client Component 内でのみ使用可能。Server Component から関数を props として渡すと Next.js がエラーを出す

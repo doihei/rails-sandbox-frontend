@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing/react";
 import { MockLink } from "@apollo/client/testing";
 import { ThemeProvider, IntlProvider, createTheme } from "smarthr-ui";
-import { ArticleForm } from "@/components/ArticleForm";
+import { ArticleForm } from "@/components/articles/ArticleForm";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
 
 // next/navigation のモック

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client/react";
-import { Table, Th, Td, Button, Text, StatusLabel } from "smarthr-ui";
+import { Cluster, Table, Th, Td, Button, Text, StatusLabel } from "smarthr-ui";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
 import Link from "next/link";
 
@@ -36,7 +36,7 @@ export function ArticleList() {
             <tr key={article.id}>
               <Td>
                 <Link href={`/articles/${article.id}`} style={{ color: "inherit" }}>
-                  {article.title}
+                  {article.title} ({article.commentsCount}件)
                 </Link>
               </Td>
               <Td>
@@ -48,13 +48,13 @@ export function ArticleList() {
                 {article.user.name ?? article.user.email}
               </Td>
               <Td>
-                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                <Cluster gap="XXS">
                   {article.tags.map((tag) => (
                     <StatusLabel key={tag.id} type="blue">
                       {tag.name}
                     </StatusLabel>
                   ))}
-                </div>
+                </Cluster>
               </Td>
             </tr>
           ))}
@@ -62,14 +62,14 @@ export function ArticleList() {
       </Table>
 
       {pageInfo.hasNextPage && (
-        <div style={{ marginTop: 16, display: "flex", justifyContent: "center" }}>
+        <Cluster justify="center" style={{ marginTop: "1rem" }}>
           <Button
             variant="secondary"
             onClick={() => fetchMore({ variables: { after: pageInfo.endCursor } })}
           >
             もっと見る
           </Button>
-        </div>
+        </Cluster>
       )}
     </div>
   );

@@ -42,6 +42,8 @@ const makeArticleMock = (meId: string | null) => ({
         lockVersion: 0,
         createdAt: "2024-01-01T00:00:00Z",
         updatedAt: "2024-01-01T00:00:00Z",
+        commentsCount: 0,
+        comments: [],
         user: { id: "user-1", name: "著者", email: "author@example.com" },
         tags: [{ id: "t1", name: "rails" }],
       },

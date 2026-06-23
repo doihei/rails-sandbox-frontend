@@ -14,7 +14,9 @@ paths:
 ## テスト環境
 
 - テストフレームワーク: Vitest + @testing-library/react
-- テストファイルは `tests/<ディレクトリ名>/` に配置する（本体と同階層には置かない）
+- テストファイルは `tests/components/<種別>/` に配置する（コンポーネントと同階層には置かない）
+  - `tests/components/articles/` — 記事関連コンポーネントのテスト
+  - `tests/components/comments/` — コメント関連コンポーネントのテスト
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
 - Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` と `tests/vrt/**` を設定済み。新たに Playwright テストを追加する場合もこれらのディレクトリに配置すること
 
@@ -46,7 +48,8 @@ paths:
 - ビューポートは `1280×720` に固定し、アニメーションは `--force-prefers-reduced-motion` で無効化済み（`playwright.config.ts` の vrt プロジェクト設定を参照）
 - ベースライン画像は `tests/vrt/*.spec.ts-snapshots/` に保存し、git で管理する
 - **ベースラインは Linux（CI）のみ管理する**。macOS など他 OS のスナップショットはコミットしない
-- ベースラインの更新は GitHub Actions の `workflow_dispatch`（`update_snapshots: true`）で行う。ローカルの `npm run test:vrt:update` は Linux 以外では使わないこと
+- ベースラインの更新は `vrt-snapshot.yml` が自動で行う（詳細は README.md の「VRT ベースラインの更新フロー」を参照）
+- 手動更新が必要な場合は GitHub Actions の `workflow_dispatch`（`update_snapshots: true`）を使う
 
 ## jsdom の補完
 

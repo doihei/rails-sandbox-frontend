@@ -97,7 +97,18 @@ npm run dev          # 別ターミナルで起動
 npm run test:vrt     # スクリーンショットを既存ベースラインと比較
 ```
 
-UI を意図的に変更した場合はベースラインを更新する。**ベースラインは Linux（CI）のみ管理するため、GitHub Actions の `workflow_dispatch` で更新すること**（ローカルの `--update-snapshots` は使わない）：
+UI を意図的に変更した場合は、以下のフローでベースラインを更新する。**ベースラインは Linux（CI）のみ管理するため、ローカルの `--update-snapshots` は使わない。**
+
+#### VRT ベースラインの更新フロー（自動）
+
+`feat/*` ブランチで UI を変更すると CI が自動で対応する：
+
+1. `feat/*` ブランチの PR を作成する
+2. `vrt-snapshot.yml` が自動起動し、`vrt/<branch>` ブランチにスナップショットを生成して PR を作成する
+3. スナップショット PR の「Files changed」でビジュアル差分を確認し、問題なければ feature ブランチにマージする
+4. `vrt.yml` が比較テストを実行 → 通過したら feature PR を main にマージ可能
+
+#### 手動更新（緊急時・fallback）
 
 1. GitHub リポジトリの **Actions** タブ → **VRT** ワークフローを選択
-2. **Run workflow** → `ベースラインを更新して自動コミットする` にチェック → **Run workflow**
+2. **Run workflow** → `ベースラインを手動で更新して自動コミットする` にチェック → **Run workflow**

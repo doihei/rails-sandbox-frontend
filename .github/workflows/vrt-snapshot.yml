@@ -1,0 +1,109 @@
+name: VRT Snapshot Update
+
+# feature PR が作成・更新されたとき、スナップショットを自動生成して
+# vrt/<feature-branch> ブランチへ push し、feature ブランチへの PR を作成・更新する
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'stories/**'
+      - 'lib/**'
+
+jobs:
+  snapshot:
+    # feat/* ブランチのPRのみ対象（chore/docs/ci 等の非UI変更ブランチを除外）
+    # vrt/* ブランチ自身のPRでは実行しない（無限ループ防止）
+    if: "startsWith(github.head_ref, 'feat/') && !startsWith(github.head_ref, 'vrt/')"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:8080/graphql
+
+      - name: Start app
+        run: npm run start &
+
+      - name: Wait for app
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Generate snapshots
+        run: npx playwright test --project=vrt --update-snapshots
+
+      - name: Push snapshot branch and create/update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FEATURE_BRANCH: ${{ github.head_ref }}
+        run: |
+          VRT_BRANCH="vrt/${FEATURE_BRANCH}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -B "$VRT_BRANCH"
+          git add tests/vrt/
+
+          if git diff --staged --quiet; then
+            echo "スナップショットに差分なし。PRの作成をスキップします。"
+            exit 0
+          fi
+
+          git commit -m "chore: VRT スナップショットを更新 (${FEATURE_BRANCH})"
+          git push origin "$VRT_BRANCH" --force
+
+          # PR body をファイルに書き出し（heredoc をコマンド置換の中に入れない）
+          cat > /tmp/vrt-pr-body.md << EOF
+          ## VRT スナップショット自動更新
+
+          UI 変更に伴い、VRT ベースライン画像（Linux）を更新しました。
+
+          ### レビュー手順
+
+          1. 「Files changed」タブでスクリーンショットの差分を確認する
+          2. 問題なければ **\`${FEATURE_BRANCH}\`** ブランチにマージする
+          3. 問題があれば元の feature PR を修正する（このPRはCIが自動で更新します）
+
+          > このPRは \`vrt-snapshot.yml\` により自動生成されました。
+          EOF
+
+          # PR が既存かチェックし、なければ新規作成
+          EXISTING_PR=$(gh pr list \
+            --head "$VRT_BRANCH" \
+            --base "$FEATURE_BRANCH" \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create \
+              --title "chore: VRT スナップショット更新 (${FEATURE_BRANCH})" \
+              --body-file /tmp/vrt-pr-body.md \
+              --head "$VRT_BRANCH" \
+              --base "$FEATURE_BRANCH"
+          else
+            echo "VRT PR #${EXISTING_PR} は既に存在します。push により更新されました。"
+          fi

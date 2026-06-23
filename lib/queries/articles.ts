@@ -17,6 +17,7 @@ export const ARTICLES_QUERY = gql(`
           id
           name
         }
+        commentsCount
       }
       pageInfo {
         hasNextPage

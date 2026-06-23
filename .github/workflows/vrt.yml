@@ -1,22 +1,23 @@
 name: VRT
 
 on:
-  push:
-    branches: [main]
+  # vrt-snapshot.yml が tests/vrt/ にスナップショットをコミット後、
+  # feature PR に含まれる tests/vrt/** の変化を検知して比較テストを実行する
   pull_request:
+    branches: [main]
     paths:
-      - 'app/**'
-      - 'components/**'
       - 'tests/vrt/**'
   workflow_dispatch:
     inputs:
       update_snapshots:
-        description: 'ベースラインを更新して自動コミットする'
+        description: 'ベースラインを手動で更新して自動コミットする'
         type: boolean
         default: false
 
 jobs:
   vrt:
+    # vrt/* ブランチ自身のPRでは実行しない（スナップショット生成ブランチ）
+    if: "!startsWith(github.head_ref, 'vrt/')"
     runs-on: ubuntu-latest
 
     permissions:
@@ -47,11 +48,11 @@ jobs:
       - name: Wait for app
         run: npx wait-on http://localhost:3000 --timeout 60000
 
-      - name: Update snapshots (Linux baseline)
+      - name: Update snapshots (manual)
         if: github.event.inputs.update_snapshots == 'true'
         run: npx playwright test --project=vrt --update-snapshots
 
-      - name: Commit updated snapshots
+      - name: Commit updated snapshots (manual)
         if: github.event.inputs.update_snapshots == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -60,7 +61,7 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: update VRT baselines (linux)"
           git push
 
-      - name: Run VRT
+      - name: Run VRT comparison
         if: github.event.inputs.update_snapshots != 'true'
         run: npx playwright test --project=vrt
 
