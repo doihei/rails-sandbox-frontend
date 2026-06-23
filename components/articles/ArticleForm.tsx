@@ -82,7 +82,7 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
       });
       if (handleMutationErrors(data?.updateArticle?.errors)) return;
       router.push(`/articles/${articleId}`);
-      router.refresh(); // キャッシュを更新して最新データを反映
+      router.refresh();
     } else {
       const { data } = await createArticle({
         variables: {
@@ -100,12 +100,7 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap="L">
-        {/* 常にDOMに存在させ、中身の変化を aria-live で通知する */}
-        <div
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
+        <div role="alert" aria-live="assertive" aria-atomic="true">
           {errors.root && (
             <NotificationBar type="error">
               {errors.root.message}

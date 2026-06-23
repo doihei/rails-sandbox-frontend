@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { MockedProvider } from "@apollo/client/testing/react";
 import { waitFor, expect } from "storybook/test";
-import { ArticleList } from "@/components/ArticleList";
+import { ArticleList } from "@/components/articles/ArticleList";
 import { ARTICLES_QUERY } from "@/lib/queries/articles";
 
 const mockNodes = [
@@ -13,6 +13,11 @@ const mockNodes = [
     createdAt: "2024-01-01T00:00:00Z",
     user: { name: "田中太郎", email: "tanaka@example.com" },
     tags: [{ id: "t1", name: "rails" }, { id: "t2", name: "graphql" }],
+    comments: [
+      { id: "c1", body: "コメント1", user: { name: null, email: "yamada@example.com" }},
+      { id: "c2", body: "コメント2", user: { name: null, email: "yamada@example.com" }},
+    ],
+    commentsCount: 2,
   },
   {
     id: "2",
@@ -22,6 +27,8 @@ const mockNodes = [
     createdAt: "2024-01-02T00:00:00Z",
     user: { name: null, email: "yamada@example.com" },
     tags: [],
+    comments: [],
+    commentsCount: 0,
   },
 ];
 
@@ -74,10 +81,10 @@ export const Default: Story = {
   ],
   play: async ({ canvas }) => {
     await waitFor(() =>
-      expect(canvas.getByText("Railsで学ぶGraphQL")).toBeVisible()
+      expect(canvas.getByText(/Railsで学ぶGraphQL/)).toBeVisible()
     );
 
-    const link = canvas.getByRole("link", { name: "Railsで学ぶGraphQL" });
+    const link = canvas.getByRole("link", { name: /Railsで学ぶGraphQL/ });
     expect(link.getAttribute("href")).toBe("/articles/1");
 
     expect(canvas.getByText("rails")).toBeVisible();

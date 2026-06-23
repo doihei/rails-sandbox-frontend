@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { MockedProvider } from "@apollo/client/testing/react";
 import { expect, waitFor } from "storybook/test";
-import { ArticleForm } from "@/components/ArticleForm";
+import { ArticleForm } from "@/components/articles/ArticleForm";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
 
 const meta = {

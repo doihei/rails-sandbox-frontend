@@ -2,8 +2,8 @@
 
 import { useQuery } from "@apollo/client/react";
 import { useParams } from "next/navigation";
-import { Base, Heading, Stack, Text, NotificationBar } from "smarthr-ui";
-import { ArticleForm } from "@/components/ArticleForm";
+import { Base, Cluster, Heading, Stack, Text, NotificationBar } from "smarthr-ui";
+import { ArticleForm } from "@/components/articles/ArticleForm";
 import { LogoutButton } from "@/components/LogoutButton";
 import { GET_ARTICLE } from "@/lib/queries/article";
 import Link from "next/link";
@@ -35,19 +35,12 @@ export default function EditArticlePage() {
 
   return (
     <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 16px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
+      <Cluster justify="space-between" align="center" style={{ marginBottom: "24px" }}>
         <Link href={`/articles/${id}`} style={{ fontSize: "14px", color: "#6b7280" }}>
           ← 記事詳細
         </Link>
         <LogoutButton />
-      </div>
+      </Cluster>
 
       <Base padding="XL" layer={1}>
         <Stack gap="L">
