@@ -18,6 +18,8 @@ import {
 import { GET_ARTICLE, DELETE_ARTICLE } from "@/lib/queries/article";
 import { LogoutButton } from "@/components/LogoutButton";
 import Link from "next/link";
+import { CommentList } from "@/components/comments/CommentList";
+import { CommentForm } from "@/components/comments/CommentForm";
 
 const STATUS_LABEL: Record<string, { type: "green" | "grey"; text: string }> = {
   published: { type: "green", text: "公開済み" },
@@ -86,60 +88,78 @@ export default function ArticleDetailPage() {
         <LogoutButton />
       </Cluster>
 
-      <Base padding="XL" layer={1}>
-        <Stack gap="L">
-          {/* タイトル・ステータス */}
-          <Stack gap="XS">
-            <Cluster align="center" gap="M">
-              <Heading>{article.title}</Heading>
-              <StatusLabel type={statusLabel.type}>{statusLabel.text}</StatusLabel>
-            </Cluster>
-            <Text size="S" color="TEXT_GREY">
-              {article.user.name || article.user.email} ·{" "}
-              {new Date(article.createdAt).toLocaleDateString("ja-JP")}
-            </Text>
+      <Stack gap="XL">
+        <Base padding="XL" layer={1}>
+          <Stack gap="L">
+            {/* タイトル・ステータス */}
+            <Stack gap="XS">
+              <Cluster align="center" gap="M">
+                <Heading>{article.title}</Heading>
+                <StatusLabel type={statusLabel.type}>{statusLabel.text}</StatusLabel>
+              </Cluster>
+              <Text size="S" color="TEXT_GREY">
+                {article.user.name || article.user.email} ·{" "}
+                {new Date(article.createdAt).toLocaleDateString("ja-JP")}
+              </Text>
+            </Stack>
+
+            {/* タグ */}
+            {article.tags.length > 0 && (
+              <Cluster gap="XS">
+                {article.tags.map((tag: { id: string; name: string }) => (
+                  <StatusLabel key={tag.id} type="blue">{tag.name}</StatusLabel>
+                ))}
+              </Cluster>
+            )}
+
+            {/* 本文 */}
+            <div
+              style={{
+                lineHeight: 1.8,
+                color: "#374151",
+                whiteSpace: "pre-wrap",
+                borderTop: "1px solid #e5e7eb",
+                paddingTop: "24px",
+              }}
+            >
+              {article.body}
+            </div>
+
+            {/* オーナーのみ操作ボタン */}
+            {isOwner && (
+              <Cluster gap="M" style={{ borderTop: "1px solid #e5e7eb", paddingTop: "16px" }}>
+                <AnchorButton elementAs={Link} href={`/articles/${article.id}/edit`} variant="secondary">
+                  編集
+                </AnchorButton>
+                <Button
+                  ref={deleteButtonRef}
+                  variant="danger"
+                  onClick={() => setDeleteDialogOpen(true)}
+                  loading={deleting}
+                >
+                  削除
+                </Button>
+              </Cluster>
+            )}
           </Stack>
+        </Base>
 
-          {/* タグ */}
-          {article.tags.length > 0 && (
-            <Cluster gap="XS">
-              {article.tags.map((tag: { id: string; name: string }) => (
-                <StatusLabel key={tag.id} type="blue">{tag.name}</StatusLabel>
-              ))}
-            </Cluster>
-          )}
-
-          {/* 本文 */}
-          <div
-            style={{
-              lineHeight: 1.8,
-              color: "#374151",
-              whiteSpace: "pre-wrap",
-              borderTop: "1px solid #e5e7eb",
-              paddingTop: "24px",
-            }}
-          >
-            {article.body}
-          </div>
-
-          {/* オーナーのみ操作ボタン */}
-          {isOwner && (
-            <Cluster gap="M" style={{ borderTop: "1px solid #e5e7eb", paddingTop: "16px" }}>
-              <AnchorButton elementAs={Link} href={`/articles/${article.id}/edit`} variant="secondary">
-                編集
-              </AnchorButton>
-              <Button
-                ref={deleteButtonRef}
-                variant="danger"
-                onClick={() => setDeleteDialogOpen(true)}
-                loading={deleting}
-              >
-                削除
-              </Button>
-            </Cluster>
-          )}
-        </Stack>
-      </Base>
+        <Base padding="XL" layer={1}>
+          <section aria-labelledby="comments-heading">
+            <Stack gap="L">
+              <Heading id="comments-heading">
+                コメント（{article.commentsCount}）件
+              </Heading>
+              <CommentList
+                comments={article.comments}
+                articleId={article.id}
+                meId={data.me?.id}
+              />
+              {data.me && <CommentForm articleId={article.id} />}
+            </Stack>
+          </section>
+        </Base>
+      </Stack>
 
       <ControlledActionDialog
         isOpen={deleteDialogOpen}
