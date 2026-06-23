@@ -14,8 +14,9 @@ on:
 
 jobs:
   snapshot:
+    # feat/* ブランチのPRのみ対象（chore/docs/ci 等の非UI変更ブランチを除外）
     # vrt/* ブランチ自身のPRでは実行しない（無限ループ防止）
-    if: "!startsWith(github.head_ref, 'vrt/')"
+    if: "startsWith(github.head_ref, 'feat/') && !startsWith(github.head_ref, 'vrt/')"
     runs-on: ubuntu-latest
 
     permissions:
