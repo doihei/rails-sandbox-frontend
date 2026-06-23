@@ -11,6 +11,7 @@ on:
       - 'components/**'
       - 'stories/**'
       - 'lib/**'
+      - 'tests/vrt/*.spec.ts'
 
 jobs:
   snapshot:

@@ -2,11 +2,11 @@ name: VRT
 
 on:
   # vrt-snapshot.yml が tests/vrt/ にスナップショットをコミット後、
-  # feature PR に含まれる tests/vrt/** の変化を検知して比較テストを実行する
+  # feature PR に含まれる画像変化を検知して比較テストを実行する
   pull_request:
     branches: [main]
     paths:
-      - 'tests/vrt/**'
+      - 'tests/vrt/**/*.png'
   workflow_dispatch:
     inputs:
       update_snapshots:
