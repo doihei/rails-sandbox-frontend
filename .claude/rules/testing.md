@@ -46,6 +46,7 @@ paths:
 - テスト実行は `npm run test:vrt`。アプリが `http://localhost:3000` で起動している必要がある
 - 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う（a11y と同じヘルパーを共有）
 - ビューポートは `1280×720` に固定し、アニメーションは `--force-prefers-reduced-motion` で無効化済み（`playwright.config.ts` の vrt プロジェクト設定を参照）
+- スクリーンショットはページ全体をキャプチャする（`toHaveScreenshot` に `{ fullPage: true }` を渡す）
 - ベースライン画像は `tests/vrt/*.spec.ts-snapshots/` に保存し、git で管理する
 - **ベースラインは Linux（CI）のみ管理する**。macOS など他 OS のスナップショットはコミットしない
 - ベースラインの更新は `vrt-snapshot.yml` が自動で行う（詳細は README.md の「VRT ベースラインの更新フロー」を参照）
