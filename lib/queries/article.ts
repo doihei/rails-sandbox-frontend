@@ -19,6 +19,15 @@ export const GET_ARTICLE = gql(`
         id
         name
       }
+      comments {
+        id
+        body
+        createdAt
+        user {
+          name
+          email
+        }
+      }
     }
     me {
       id
