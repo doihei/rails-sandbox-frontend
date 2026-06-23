@@ -12,6 +12,11 @@ export const MOCK_ARTICLES = {
           createdAt: '2024-01-01T00:00:00Z',
           user: { name: 'テストユーザー', email: 'test@example.com' },
           tags: [{ id: 't1', name: 'rails' }],
+          comments: [
+            { id: "c1", body: "コメント1", user: { name: null, email: "yamada@example.com" }},
+            { id: "c2", body: "コメント2", user: { name: null, email: "yamada@example.com" }},
+          ],
+          commentsCount: 2,
         },
       ],
       pageInfo: { hasNextPage: false, endCursor: null },
@@ -31,6 +36,11 @@ export const MOCK_ARTICLE = {
       updatedAt: '2024-01-01T00:00:00Z',
       user: { id: '1', name: 'テストユーザー', email: 'test@example.com' },
       tags: [{ id: 't1', name: 'rails' }],
+      comments: [
+        { id: "c1", body: "コメント1", user: { name: null, email: "yamada@example.com" }},
+        { id: "c2", body: "コメント2", user: { name: null, email: "yamada@example.com" }},
+      ],
+      commentsCount: 2,
     },
     me: { id: '1' },
   },
