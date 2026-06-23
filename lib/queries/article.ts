@@ -24,10 +24,12 @@ export const GET_ARTICLE = gql(`
         body
         createdAt
         user {
+          id
           name
           email
         }
       }
+      commentsCount
     }
     me {
       id
