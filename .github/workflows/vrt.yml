@@ -1,6 +1,8 @@
 name: VRT
 
 on:
+  push:
+    branches: [main]
   # vrt-snapshot.yml が tests/vrt/ にスナップショットをコミット後、
   # feature PR に含まれる画像変化を検知して比較テストを実行する
   pull_request:
