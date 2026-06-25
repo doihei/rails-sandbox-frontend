@@ -41,6 +41,17 @@ export function createApolloClient(token?: string) {
                 };
               },
             },
+            tags: {
+              keyArgs: false,
+              merge(existing, incoming) {
+                const existingNodes = existing?.nodes ?? [];
+                const incomingNodes = incoming?.nodes ?? [];
+                return {
+                  ...incoming,
+                  nodes: [...existingNodes, ...incomingNodes],
+                };
+              },
+            },
           },
         },
       },

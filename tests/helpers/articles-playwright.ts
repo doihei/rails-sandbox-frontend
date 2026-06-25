@@ -1,4 +1,5 @@
 import type { BrowserContext, Page } from '@playwright/test'
+import { MOCK_TAGS, MOCK_TAGGED_ARTICLES } from './tags-playwright'
 
 export const MOCK_ARTICLES = {
   data: {
@@ -49,6 +50,8 @@ export const MOCK_ARTICLE = {
 const MOCKS: Record<string, unknown> = {
   GetArticles: MOCK_ARTICLES,
   GetArticle: MOCK_ARTICLE,
+  GetTags: MOCK_TAGS,
+  GetTaggedArticles: MOCK_TAGGED_ARTICLES,
 }
 
 /**

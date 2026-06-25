@@ -52,6 +52,7 @@ export default function EditArticlePage() {
               title: article.title,
               body: article.body,
               status: article.status as "draft" | "published" | "archived",
+              tagNames: article.tags.map((t) => t.name)
             }}
           />
         </Stack>

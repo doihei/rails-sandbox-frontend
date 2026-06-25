@@ -18,15 +18,21 @@
 
 ```
 app/                    # Next.js App Router（ページ・レイアウト）
+  page.tsx              # トップページ（最近の記事・人気タグ）
   login/                # ログインページ・Server Action
   logout/               # ログアウト Server Action
   articles/             # 記事一覧・詳細ページ
     [id]/               # 記事詳細ページ（表示・削除）
       edit/             # 記事編集ページ
     new/                # 記事新規作成ページ
+  tags/                 # タグ一覧ページ
+    [id]/               # タグ別記事一覧ページ
 components/             # UI コンポーネント
-  articles/             # 記事関連（ArticleForm, ArticleList）
+  articles/             # 記事関連（ArticleForm, ArticleList, ArticleTable, RecentArticles）
   comments/             # コメント関連（CommentForm, CommentList）
+  tags/                 # タグ関連（TagList, TaggedArticleList, PopularTags）
+  PageLayout.tsx        # 共通ページレイアウト（最大幅・余白）
+  SiteHeader.tsx        # サイトナビゲーションヘッダー
 lib/
   apollo-client.ts      # Apollo Client 初期設定
   auth.ts               # JWT Cookie 管理ユーティリティ

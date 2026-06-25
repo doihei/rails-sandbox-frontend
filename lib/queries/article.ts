@@ -53,6 +53,7 @@ export const UPDATE_ARTICLE = gql(`
     $body: String
     $status: String
     $lockVersion: Int
+    $tagNames: [String!]
   ) {
     updateArticle(input: {
       id: $id
@@ -60,6 +61,7 @@ export const UPDATE_ARTICLE = gql(`
       body: $body
       status: $status
       lockVersion: $lockVersion
+      tagNames: $tagNames
     }) {
       article {
         id
@@ -67,6 +69,7 @@ export const UPDATE_ARTICLE = gql(`
         body
         status
         lockVersion
+        tags { id name }
       }
       errors
     }
@@ -74,8 +77,16 @@ export const UPDATE_ARTICLE = gql(`
 `);
 
 export const CREATE_ARTICLE = gql(`
-  mutation CreateArticle($title: String!, $body: String!) {
-    createArticle(input: { title: $title, body: $body }) {
+  mutation CreateArticle(
+    $title: String!,
+    $body: String!,
+    $tagNames: [String!]
+  ) {
+    createArticle(input: {
+      title: $title,
+      body: $body,
+      tagNames: $tagNames
+    }) {
       article {
         id
       }
