@@ -3,7 +3,7 @@
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
 import {
   Stack,
@@ -17,6 +17,7 @@ import {
   StatusLabel,
 } from "smarthr-ui";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
+import { GET_TAGS } from "@/lib/queries/tag";
 import { TokenInput } from "@/components/TokenInput";
 import Link from "next/link";
 
@@ -63,6 +64,11 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
   });
 
   const tagNames = useWatch({ control, name: "tagNames" }) ?? [];
+
+  const { data: tagsData } = useQuery(GET_TAGS, { variables: { first: 200 }, fetchPolicy: 'cache-and-network' });
+  const tagSuggestions = (tagsData?.tags?.nodes ?? [])
+    .filter((tag): tag is NonNullable<typeof tag> => tag !== null && !tagNames.includes(tag.name))
+    .map((tag) => ({ value: tag.name, label: tag.name }));
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
   const [updateArticle] = useMutation(UPDATE_ARTICLE);
@@ -158,6 +164,7 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
           <TokenInput
             value={tagNames}
             onChange={(tags) => setValue("tagNames", tags)}
+            suggestedItems={tagSuggestions}
           />
         </FormControl>
 
