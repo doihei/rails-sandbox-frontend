@@ -17,6 +17,7 @@ paths:
 - テストファイルは `tests/components/<種別>/` に配置する（コンポーネントと同階層には置かない）
   - `tests/components/articles/` — 記事関連コンポーネントのテスト
   - `tests/components/comments/` — コメント関連コンポーネントのテスト
+  - `tests/components/tags/` — タグ関連コンポーネントのテスト
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
 - Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` と `tests/vrt/**` を設定済み。新たに Playwright テストを追加する場合もこれらのディレクトリに配置すること
 
@@ -37,7 +38,9 @@ paths:
 - a11y テストは `tests/a11y/` に配置し、`*.spec.ts` の拡張子を使う
 - テスト実行は `npm run test:a11y`。アプリが `http://localhost:3000` で起動している必要がある
 - `AxeBuilder.withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])` で WCAG 2.1 AA 準拠を検査する
-- 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う（例: `setupArticlesMocks`）
+- 認証・GraphQL モックの共通セットアップは `tests/helpers/` のヘルパーを使う
+  - `articles-playwright.ts` — `setupArticlesMocks` を export（認証 Cookie 注入 + GraphQL インターセプト）
+  - `tags-playwright.ts` — タグ・タグ別記事一覧のモックデータを export（`articles-playwright.ts` から import して MOCKS マップに含めている）
 - バリデーションエラーなど状態変化後も axe 検査を行い、エラー表示時の違反も確認する
 
 ## VRT（Playwright スクリーンショット回帰テスト）
