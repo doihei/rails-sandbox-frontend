@@ -8,6 +8,7 @@ import { GET_TAGS } from '@/lib/queries/tag'
 export function TagList() {
   const { data, loading, error, fetchMore } = useQuery(GET_TAGS, {
     variables: { first: 20 },
+    fetchPolicy: 'cache-and-network',
   })
 
   if (loading) return <Text>読み込み中...</Text>

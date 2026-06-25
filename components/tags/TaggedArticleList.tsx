@@ -10,9 +10,13 @@ type Props = {
 }
 
 export function TaggedArticleList({ tagId }: Props) {
-  const { data: tagsData } = useQuery(GET_TAGS)
+  const { data: tagsData } = useQuery(GET_TAGS, {
+    variables: { first: 200 },
+    fetchPolicy: 'cache-and-network',
+  })
   const { data, loading, error, fetchMore } = useQuery(GET_TAGGED_ARTICLES, {
     variables: { tagId, first: 10 },
+    fetchPolicy: 'cache-and-network',
   })
 
   const tag = tagsData?.tags.nodes?.find((t) => t?.id === tagId)

@@ -32,24 +32,26 @@ export function createApolloClient(token?: string) {
           fields: {
             articles: {
               keyArgs: false,
-              merge(existing, incoming) {
-                const existingNodes = existing?.nodes ?? [];
+              merge(existing, incoming, { args }) {
+                const existingNodes = args?.after ? (existing?.nodes ?? []) : [];
                 const incomingNodes = incoming?.nodes ?? [];
-                return {
-                  ...incoming,
-                  nodes: [...existingNodes, ...incomingNodes],
-                };
+                return { ...incoming, nodes: [...existingNodes, ...incomingNodes] };
               },
             },
             tags: {
               keyArgs: false,
-              merge(existing, incoming) {
-                const existingNodes = existing?.nodes ?? [];
+              merge(existing, incoming, { args }) {
+                const existingNodes = args?.after ? (existing?.nodes ?? []) : [];
                 const incomingNodes = incoming?.nodes ?? [];
-                return {
-                  ...incoming,
-                  nodes: [...existingNodes, ...incomingNodes],
-                };
+                return { ...incoming, nodes: [...existingNodes, ...incomingNodes] };
+              },
+            },
+            taggedArticles: {
+              keyArgs: ['tagId'],
+              merge(existing, incoming, { args }) {
+                const existingNodes = args?.after ? (existing?.nodes ?? []) : [];
+                const incomingNodes = incoming?.nodes ?? [];
+                return { ...incoming, nodes: [...existingNodes, ...incomingNodes] };
               },
             },
           },
