@@ -28,11 +28,10 @@ app/                    # Next.js App Router（ページ・レイアウト）
   tags/                 # タグ一覧ページ
     [id]/               # タグ別記事一覧ページ
 components/             # UI コンポーネント
-  articles/             # 記事関連（ArticleForm, ArticleList, ArticleTable, RecentArticles）
-  comments/             # コメント関連（CommentForm, CommentList）
-  tags/                 # タグ関連（TagList, TaggedArticleList, PopularTags）
-  PageLayout.tsx        # 共通ページレイアウト（最大幅・余白）
-  SiteHeader.tsx        # サイトナビゲーションヘッダー
+  articles/             # 記事関連コンポーネント
+  comments/             # コメント関連コンポーネント
+  tags/                 # タグ関連コンポーネント
+  *.tsx                 # 汎用コンポーネント（レイアウト・共通 UI など）
 lib/
   apollo-client.ts      # Apollo Client 初期設定
   auth.ts               # JWT Cookie 管理ユーティリティ
@@ -51,6 +50,9 @@ tests/                  # テストファイル（詳細は .claude/rules/testin
 - トークンは `lib/auth.ts` の `getToken()` で Cookie から取得し、`app/layout.tsx` が Server Component として読み込んで `Providers` に渡す
 - GraphQL クエリの型は `graphql-codegen`（`npm run codegen`）で自動生成し `lib/gql/` に出力する。手動型定義は書かない
 - ページネーションのマージは `fetchMore` の `updateQuery` ではなく、`lib/apollo-client.ts` の `typePolicies` に `merge` 関数として定義する
+- `merge` 関数は `args?.after` の有無で挙動を切り替える：`after` あり（fetchMore）は既存ノードに追記、`after` なし（初回取得）はキャッシュを置き換える（重複防止）
+- `keyArgs: false` を設定したフィールドを使う `useQuery` には必ず `fetchPolicy: 'cache-and-network'` を付与する（異なる `first` 値で同じキャッシュキーを共有するため、ネットワーク取得なしだと件数が不足することがある）
+- 新規ページネーション対応フィールド（connection type）を追加する際は `typePolicies` にも同様のエントリを追加すること
 - Rails の `ISO8601DateTime` / `ISO8601Date` スカラーは `string` にマッピング済み（`codegen.ts` の `scalars` を参照）。新しい日時スカラーを追加した場合も同様に設定すること
 
 ## smarthr-ui

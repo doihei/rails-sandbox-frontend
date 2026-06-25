@@ -10,7 +10,10 @@ import { ARTICLES_QUERY } from '@/lib/queries/articles'
 import { ArticleTable } from './ArticleTable'
 
 export function RecentArticles() {
-  const { data, loading, error } = useQuery(ARTICLES_QUERY, { variables: { first: 5 } })
+  const { data, loading, error } = useQuery(ARTICLES_QUERY, {
+    variables: { first: 5 },
+    fetchPolicy: 'cache-and-network',
+  })
 
   if (loading) return <Text>読み込み中...</Text>
   if (error) return <Text>エラー: {error.message}</Text>

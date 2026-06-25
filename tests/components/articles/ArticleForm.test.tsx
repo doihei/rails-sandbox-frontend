@@ -6,6 +6,12 @@ import { MockLink } from "@apollo/client/testing";
 import { ThemeProvider, IntlProvider, createTheme } from "smarthr-ui";
 import { ArticleForm } from "@/components/articles/ArticleForm";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
+import { GET_TAGS } from "@/lib/queries/tag";
+
+const getTagsMock = {
+  request: { query: GET_TAGS, variables: { first: 200 } },
+  result: { data: { tags: { nodes: [], pageInfo: { hasNextPage: false, endCursor: null } } } },
+};
 
 // next/navigation のモック
 const mockPush = vi.fn();
@@ -30,7 +36,7 @@ function renderWithProviders(ui: React.ReactElement, mocks: MockLink.MockedRespo
 describe("ArticleForm — 新規作成モード", () => {
   it("タイトル未入力で送信するとバリデーションエラーを表示する", async () => {
     const user = userEvent.setup();
-    renderWithProviders(<ArticleForm />);
+    renderWithProviders(<ArticleForm />, [getTagsMock]);
 
     await user.click(screen.getByRole("button", { name: "作成する" }));
 
@@ -41,7 +47,7 @@ describe("ArticleForm — 新規作成モード", () => {
 
   it("本文未入力で送信するとバリデーションエラーを表示する", async () => {
     const user = userEvent.setup();
-    renderWithProviders(<ArticleForm />);
+    renderWithProviders(<ArticleForm />, [getTagsMock]);
 
     await user.type(screen.getByLabelText(/タイトル/), "テストタイトル");
     await user.click(screen.getByRole("button", { name: "作成する" }));
@@ -53,7 +59,7 @@ describe("ArticleForm — 新規作成モード", () => {
 
   it("101文字以上のタイトルでバリデーションエラーを表示する", async () => {
     const user = userEvent.setup();
-    renderWithProviders(<ArticleForm />);
+    renderWithProviders(<ArticleForm />, [getTagsMock]);
 
     await user.type(screen.getByLabelText(/タイトル/), "a".repeat(101));
     await user.click(screen.getByRole("button", { name: "作成する" }));
@@ -80,7 +86,7 @@ describe("ArticleForm — 新規作成モード", () => {
       },
     };
 
-    renderWithProviders(<ArticleForm />, [createMock]);
+    renderWithProviders(<ArticleForm />, [getTagsMock, createMock]);
 
     await user.type(screen.getByLabelText(/タイトル/), "新しい記事");
     await user.type(screen.getByLabelText(/本文/), "本文テキスト");
@@ -108,7 +114,7 @@ describe("ArticleForm — 新規作成モード", () => {
       },
     };
 
-    renderWithProviders(<ArticleForm />, [errorMock]);
+    renderWithProviders(<ArticleForm />, [getTagsMock, errorMock]);
 
     await user.type(screen.getByLabelText(/タイトル/), "エラー記事");
     await user.type(screen.getByLabelText(/本文/), "本文");
@@ -133,13 +139,13 @@ describe("ArticleForm — 編集モード", () => {
   };
 
   it("defaultValues がフォームに表示される", () => {
-    renderWithProviders(<ArticleForm {...editProps} />);
+    renderWithProviders(<ArticleForm {...editProps} />, [getTagsMock]);
     expect(screen.getByDisplayValue("既存タイトル")).toBeInTheDocument();
     expect(screen.getByDisplayValue("既存本文")).toBeInTheDocument();
   });
 
   it("ステータス選択が表示される", () => {
-    renderWithProviders(<ArticleForm {...editProps} />);
+    renderWithProviders(<ArticleForm {...editProps} />, [getTagsMock]);
     expect(screen.getByLabelText(/ステータス/)).toBeInTheDocument();
   });
 
@@ -167,7 +173,7 @@ describe("ArticleForm — 編集モード", () => {
       },
     };
 
-    renderWithProviders(<ArticleForm {...editProps} />, [updateMock]);
+    renderWithProviders(<ArticleForm {...editProps} />, [getTagsMock, updateMock]);
 
     const titleInput = screen.getByDisplayValue("既存タイトル");
     await user.clear(titleInput);

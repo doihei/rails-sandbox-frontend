@@ -3,6 +3,7 @@ import { MockedProvider } from "@apollo/client/testing/react";
 import { expect, waitFor } from "storybook/test";
 import { ArticleForm } from "@/components/articles/ArticleForm";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
+import { GET_TAGS } from "@/lib/queries/tag";
 
 const meta = {
   component: ArticleForm,
@@ -16,6 +17,11 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const getTagsMock = {
+  request: { query: GET_TAGS, variables: { first: 200 } },
+  result: { data: { tags: { nodes: [], pageInfo: { hasNextPage: false, endCursor: null } } } },
+};
 
 const createMock = {
   request: {
@@ -74,7 +80,7 @@ const updateMock = {
 export const NewForm: Story = {
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[createMock]}>
+      <MockedProvider mocks={[getTagsMock, createMock]}>
         <Story />
       </MockedProvider>
     ),
@@ -85,7 +91,7 @@ export const NewForm: Story = {
 export const ValidationError: Story = {
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[]}>
+      <MockedProvider mocks={[getTagsMock]}>
         <Story />
       </MockedProvider>
     ),
@@ -104,7 +110,7 @@ export const ValidationError: Story = {
 export const SubmitSuccess: Story = {
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[createMock]}>
+      <MockedProvider mocks={[getTagsMock, createMock]}>
         <Story />
       </MockedProvider>
     ),
@@ -125,7 +131,7 @@ export const SubmitSuccess: Story = {
 export const GraphQLError: Story = {
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[createErrorMock]}>
+      <MockedProvider mocks={[getTagsMock, createErrorMock]}>
         <Story />
       </MockedProvider>
     ),
@@ -150,7 +156,7 @@ export const EditForm: Story = {
   },
   decorators: [
     (Story) => (
-      <MockedProvider mocks={[updateMock]}>
+      <MockedProvider mocks={[getTagsMock, updateMock]}>
         <Story />
       </MockedProvider>
     ),

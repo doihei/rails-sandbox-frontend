@@ -6,7 +6,10 @@ import Link from 'next/link'
 import { GET_TAGS } from '@/lib/queries/tag'
 
 export function PopularTags() {
-  const { data, loading, error } = useQuery(GET_TAGS, { variables: { first: 5 } })
+  const { data, loading, error } = useQuery(GET_TAGS, {
+    variables: { first: 5 },
+    fetchPolicy: 'cache-and-network',
+  })
 
   if (loading) return <Text>読み込み中...</Text>
   if (error) return <Text>エラー: {error.message}</Text>
