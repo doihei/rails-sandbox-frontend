@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@apollo/client/react";
@@ -17,6 +17,7 @@ import {
   StatusLabel,
 } from "smarthr-ui";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
+import { TokenInput } from "@/components/TokenInput";
 import Link from "next/link";
 
 const articleSchema = z.object({
@@ -26,6 +27,7 @@ const articleSchema = z.object({
     .max(100, "タイトルは100文字以内で入力してください"),
   body: z.string().min(1, "本文は必須です"),
   status: z.enum(["draft", "published", "archived"]).optional(),
+  tagNames: z.array(z.string()).optional(),
 });
 
 type ArticleFormValues = z.infer<typeof articleSchema>;
@@ -51,12 +53,16 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors, isSubmitting },
     setError,
   } = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: defaultValues ?? { status: "draft" },
   });
+
+  const tagNames = useWatch({ control, name: "tagNames" }) ?? [];
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
   const [updateArticle] = useMutation(UPDATE_ARTICLE);
@@ -78,6 +84,7 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
           body: values.body,
           status: values.status,
           lockVersion: lockVersion,
+          tagNames: values.tagNames ?? [],
         },
       });
       if (handleMutationErrors(data?.updateArticle?.errors)) return;
@@ -88,6 +95,7 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
         variables: {
           title: values.title,
           body: values.body,
+          tagNames: values.tagNames ?? [],
         },
       });
       if (handleMutationErrors(data?.createArticle?.errors)) return;
@@ -145,6 +153,13 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
             />
           </FormControl>
         )}
+
+        <FormControl label={{ text: "タグ", htmlFor: "article-tags" }}>
+          <TokenInput
+            value={tagNames}
+            onChange={(tags) => setValue("tagNames", tags)}
+          />
+        </FormControl>
 
         <Cluster gap="M">
           <Button
