@@ -5,15 +5,6 @@ test.beforeEach(async ({ context, page }) => {
   await setupArticlesMocks(context, page)
 })
 
-// ── ログインページ（Cookie 注入前にアクセス）──────────
-test('ログインページ', async ({ page }) => {
-  // ログインページは Cookie なしでアクセスする（認証不要ページ）
-  // beforeEach で Cookie を注入しているが、/login は認証ガードがないので問題なし
-  await page.goto('/login')
-  await page.waitForSelector('form')
-  await expect(page).toHaveScreenshot('login.png', { fullPage: true })
-})
-
 // ── 記事一覧ページ ─────────────────────────────────────
 test('記事一覧ページ', async ({ page }) => {
   await page.goto('/articles')

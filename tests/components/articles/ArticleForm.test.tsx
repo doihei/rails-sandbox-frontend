@@ -68,7 +68,7 @@ describe("ArticleForm — 新規作成モード", () => {
     const createMock = {
       request: {
         query: CREATE_ARTICLE,
-        variables: { title: "新しい記事", body: "本文テキスト" },
+        variables: { title: "新しい記事", body: "本文テキスト", tagNames: [] },
       },
       result: {
         data: {
@@ -96,7 +96,7 @@ describe("ArticleForm — 新規作成モード", () => {
     const errorMock = {
       request: {
         query: CREATE_ARTICLE,
-        variables: { title: "エラー記事", body: "本文" },
+        variables: { title: "エラー記事", body: "本文", tagNames: [] },
       },
       result: {
         data: {
@@ -128,6 +128,7 @@ describe("ArticleForm — 編集モード", () => {
       title: "既存タイトル",
       body: "既存本文",
       status: "draft" as const,
+      tagNames: [],
     },
   };
 
@@ -153,12 +154,13 @@ describe("ArticleForm — 編集モード", () => {
           body: "既存本文",
           status: "draft",
           lockVersion: 0,
+          tagNames: [],
         },
       },
       result: {
         data: {
           updateArticle: {
-            article: { id: "1", title: "更新タイトル", body: "既存本文", status: "draft", lockVersion: 1 },
+            article: { id: "1", title: "更新タイトル", body: "既存本文", status: "draft", lockVersion: 1, tags: [] },
             errors: [],
           },
         },

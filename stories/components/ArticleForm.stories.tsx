@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 const createMock = {
   request: {
     query: CREATE_ARTICLE,
-    variables: { title: "新しい記事", body: "本文テキスト" },
+    variables: { title: "新しい記事", body: "本文テキスト", tagNames: [] },
   },
   result: {
     data: {
@@ -32,7 +32,7 @@ const createMock = {
 const createErrorMock = {
   request: {
     query: CREATE_ARTICLE,
-    variables: { title: "エラー記事", body: "本文" },
+    variables: { title: "エラー記事", body: "本文", tagNames: [] },
   },
   result: {
     data: {
@@ -50,6 +50,7 @@ const updateMock = {
       body: "既存本文",
       status: "draft",
       lockVersion: 0,
+      tagNames: [],
     },
   },
   result: {
@@ -61,6 +62,7 @@ const updateMock = {
           body: "既存本文",
           status: "draft",
           lockVersion: 1,
+          tags: [],
         },
         errors: [],
       },
@@ -144,7 +146,7 @@ export const EditForm: Story = {
   args: {
     articleId: "1",
     lockVersion: 0,
-    defaultValues: { title: "既存タイトル", body: "既存本文", status: "draft" },
+    defaultValues: { title: "既存タイトル", body: "既存本文", status: "draft", tagNames: [] },
   },
   decorators: [
     (Story) => (
