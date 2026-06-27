@@ -28,12 +28,16 @@ const mockComments = [
     id: "c1",
     body: "テストコメント1",
     createdAt: "2024-01-01T00:00:00Z",
+    likesCount: 0,
+    likedByMe: false,
     user: { id: "u1", name: "テストユーザー", email: "user1@example.com" },
   },
   {
     id: "c2",
     body: "テストコメント2",
     createdAt: "2024-01-02T00:00:00Z",
+    likesCount: 0,
+    likedByMe: false,
     user: { id: "u2", name: null, email: "user2@example.com" },
   },
 ];

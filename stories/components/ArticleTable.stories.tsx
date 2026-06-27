@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor } from "storybook/test";
+import { MockedProvider } from "@apollo/client/testing/react";
 import { ArticleTable } from "@/components/articles/ArticleTable";
 
 const mockArticles = [
@@ -8,7 +9,9 @@ const mockArticles = [
     title: "Railsで学ぶGraphQL",
     status: "published",
     commentsCount: 2,
-    user: { name: "田中太郎", email: "tanaka@example.com" },
+    likesCount: 5,
+    likedByMe: false,
+    user: { id: "user-1", name: "田中太郎", email: "tanaka@example.com" },
     tags: [{ id: "t1", name: "rails" }, { id: "t2", name: "graphql" }],
   },
   {
@@ -16,7 +19,9 @@ const mockArticles = [
     title: "Next.jsとApollo Client 4",
     status: "draft",
     commentsCount: 0,
-    user: { name: null, email: "yamada@example.com" },
+    likesCount: 0,
+    likedByMe: false,
+    user: { id: "user-2", name: null, email: "yamada@example.com" },
     tags: [],
   },
 ];
@@ -24,6 +29,13 @@ const mockArticles = [
 const meta = {
   component: ArticleTable,
   tags: ["ai-generated"],
+  decorators: [
+    (Story) => (
+      <MockedProvider mocks={[]}>
+        <Story />
+      </MockedProvider>
+    ),
+  ],
 } satisfies Meta<typeof ArticleTable>;
 
 export default meta;
