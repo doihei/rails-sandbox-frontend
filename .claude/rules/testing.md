@@ -17,6 +17,7 @@ paths:
 - テストファイルは `tests/components/<種別>/` に配置する（コンポーネントと同階層には置かない）
   - `tests/components/articles/` — 記事関連コンポーネントのテスト
   - `tests/components/comments/` — コメント関連コンポーネントのテスト
+  - `tests/components/likes/` — いいね関連コンポーネントのテスト
   - `tests/components/tags/` — タグ関連コンポーネントのテスト
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
 - Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` と `tests/vrt/**` を設定済み。新たに Playwright テストを追加する場合もこれらのディレクトリに配置すること
@@ -25,6 +26,7 @@ paths:
 
 - smarthr-ui コンポーネントを含むテストは `IntlProvider`（`locale="ja"`）+ `ThemeProvider`（`createTheme()`）でラップする
 - 本番の `components/Providers.tsx` は Apollo を含むためテストでは使わず、テスト用のラップヘルパーを各テストで用意する
+- smarthr-ui の `Button` は `disabled` 状態を HTML の `disabled` 属性ではなく `aria-disabled="true"` で表現する。テストで無効状態を検証する場合は `toBeDisabled()` ではなく `toHaveAttribute("aria-disabled", "true")` を使う
 
 ## Apollo Client のモック
 
@@ -32,6 +34,7 @@ paths:
 - `addTypename` prop は不要（v4 の MockLink が内部で両側を正規化してマッチングするため）
 - `mocks` 配列の型は `MockLink.MockedResponse[]` を使う（`any[]` は型エラー、旧 `MockedResponse` は deprecated）
   - `MockLink` は `@apollo/client/testing` からインポートする
+- `useMutation` を使うコンポーネントを含むテストは、ミューテーションを発火しない場合でも `MockedProvider mocks={[]}` でラップする必要がある（Apollo コンテキストが必要なため）
 
 ## a11y テスト（Playwright + axe-core）
 
