@@ -22,5 +22,5 @@ export function RecentArticles() {
     (a): a is NonNullable<typeof a> => a !== null
   )
 
-  return <ArticleTable articles={articles} />
+  return <ArticleTable articles={articles} meId={data?.me?.id} />
 }

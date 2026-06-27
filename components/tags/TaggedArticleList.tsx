@@ -37,6 +37,7 @@ export function TaggedArticleList({ tagId }: Props) {
         <ArticleTable
           articles={articles}
           pageInfo={data?.taggedArticles.pageInfo}
+          meId={data?.me?.id}
           onFetchMore={() =>
             fetchMore({ variables: { after: data?.taggedArticles.pageInfo.endCursor } })
           }

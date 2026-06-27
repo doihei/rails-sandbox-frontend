@@ -23,6 +23,7 @@ export function ArticleList() {
     <ArticleTable
       articles={articles}
       pageInfo={data.articles.pageInfo}
+      meId={data.me?.id}
       onFetchMore={() => fetchMore({ variables: { after: data.articles.pageInfo.endCursor } })}
     />
   );

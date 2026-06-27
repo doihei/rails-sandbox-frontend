@@ -10,6 +10,8 @@ export const GET_ARTICLE = gql(`
       lockVersion
       createdAt
       updatedAt
+      likesCount
+      likedByMe
       user {
         id
         name
@@ -23,6 +25,8 @@ export const GET_ARTICLE = gql(`
         id
         body
         createdAt
+        likesCount
+        likedByMe
         user {
           id
           name

@@ -2,13 +2,16 @@
 
 import { Cluster, Table, Th, Td, Button, StatusLabel } from "smarthr-ui";
 import Link from "next/link";
+import { LikeButton } from "@/components/likes/LikeButton";
 
 type Article = {
   id: string;
   title: string;
   status: string;
   commentsCount: number;
-  user: { name?: string | null; email: string };
+  likesCount: number;
+  likedByMe: boolean;
+  user: { id: string; name?: string | null; email: string };
   tags: { id: string; name: string }[];
 };
 
@@ -20,10 +23,11 @@ type PageInfo = {
 type Props = {
   articles: Article[];
   pageInfo?: PageInfo;
+  meId?: string;
   onFetchMore?: () => void;
 };
 
-export function ArticleTable({ articles, pageInfo, onFetchMore }: Props) {
+export function ArticleTable({ articles, pageInfo, meId, onFetchMore }: Props) {
   return (
     <div>
       <Table>
@@ -33,6 +37,7 @@ export function ArticleTable({ articles, pageInfo, onFetchMore }: Props) {
             <Th style={{ width: 120 }}>ステータス</Th>
             <Th style={{ width: 120 }}>著者</Th>
             <Th>タグ</Th>
+            <Th style={{ width: 80 }}>いいね</Th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +62,16 @@ export function ArticleTable({ articles, pageInfo, onFetchMore }: Props) {
                     </StatusLabel>
                   ))}
                 </Cluster>
+              </Td>
+              <Td>
+                <LikeButton
+                  likeableId={article.id}
+                  likeableType="Article"
+                  likesCount={article.likesCount}
+                  likedByMe={article.likedByMe}
+                  cacheId={article.id}
+                  disabled={meId !== undefined && meId === article.user.id}
+                />
               </Td>
             </tr>
           ))}

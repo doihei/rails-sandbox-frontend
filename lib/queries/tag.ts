@@ -25,7 +25,10 @@ export const GET_TAGGED_ARTICLES = gql(`
         status
         createdAt
         commentsCount
+        likesCount
+        likedByMe
         user {
+          id
           name
           email
         }
@@ -38,6 +41,9 @@ export const GET_TAGGED_ARTICLES = gql(`
         hasNextPage
         endCursor
       }
+    }
+    me {
+      id
     }
   }
 `)

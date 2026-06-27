@@ -9,7 +9,10 @@ export const ARTICLES_QUERY = gql(`
         body
         status
         createdAt
+        likesCount
+        likedByMe
         user {
+          id
           name
           email
         }
@@ -23,6 +26,9 @@ export const ARTICLES_QUERY = gql(`
         hasNextPage
         endCursor
       }
+    }
+    me {
+      id
     }
   }
 `);
