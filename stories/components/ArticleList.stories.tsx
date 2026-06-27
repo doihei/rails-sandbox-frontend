@@ -11,12 +11,10 @@ const mockNodes = [
     body: "本文1",
     status: "published",
     createdAt: "2024-01-01T00:00:00Z",
-    user: { name: "田中太郎", email: "tanaka@example.com" },
+    likesCount: 5,
+    likedByMe: false,
+    user: { id: "user-1", name: "田中太郎", email: "tanaka@example.com" },
     tags: [{ id: "t1", name: "rails" }, { id: "t2", name: "graphql" }],
-    comments: [
-      { id: "c1", body: "コメント1", user: { name: null, email: "yamada@example.com" }},
-      { id: "c2", body: "コメント2", user: { name: null, email: "yamada@example.com" }},
-    ],
     commentsCount: 2,
   },
   {
@@ -25,9 +23,10 @@ const mockNodes = [
     body: "本文2",
     status: "draft",
     createdAt: "2024-01-02T00:00:00Z",
-    user: { name: null, email: "yamada@example.com" },
+    likesCount: 0,
+    likedByMe: false,
+    user: { id: "user-2", name: null, email: "yamada@example.com" },
     tags: [],
-    comments: [],
     commentsCount: 0,
   },
 ];
@@ -43,6 +42,7 @@ const successMock = {
         nodes: mockNodes,
         pageInfo: { hasNextPage: false, endCursor: null },
       },
+      me: { id: "me-1" },
     },
   },
 };
@@ -58,6 +58,7 @@ const hasNextPageMock = {
         nodes: mockNodes,
         pageInfo: { hasNextPage: true, endCursor: "cursor-abc" },
       },
+      me: { id: "me-1" },
     },
   },
 };

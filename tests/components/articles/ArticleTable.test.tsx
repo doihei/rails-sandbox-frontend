@@ -1,17 +1,20 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MockedProvider } from "@apollo/client/testing/react";
 import { ThemeProvider, IntlProvider, createTheme } from "smarthr-ui";
 import { ArticleTable } from "@/components/articles/ArticleTable";
 
 function renderWithProviders(ui: React.ReactElement) {
   const theme = createTheme();
   return render(
-    <ThemeProvider theme={theme}>
-      <IntlProvider locale="ja">
-        {ui}
-      </IntlProvider>
-    </ThemeProvider>
+    <MockedProvider mocks={[]}>
+      <ThemeProvider theme={theme}>
+        <IntlProvider locale="ja">
+          {ui}
+        </IntlProvider>
+      </ThemeProvider>
+    </MockedProvider>
   );
 }
 
@@ -21,7 +24,9 @@ const mockArticles = [
     title: "テスト記事1",
     status: "published",
     commentsCount: 2,
-    user: { name: "テストユーザー", email: "test@example.com" },
+    likesCount: 3,
+    likedByMe: false,
+    user: { id: "user-1", name: "テストユーザー", email: "test@example.com" },
     tags: [{ id: "t1", name: "rails" }],
   },
   {
@@ -29,7 +34,9 @@ const mockArticles = [
     title: "テスト記事2",
     status: "draft",
     commentsCount: 0,
-    user: { name: null, email: "other@example.com" },
+    likesCount: 0,
+    likedByMe: false,
+    user: { id: "user-2", name: null, email: "other@example.com" },
     tags: [],
   },
 ];

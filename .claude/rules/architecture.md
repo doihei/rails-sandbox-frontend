@@ -30,6 +30,7 @@ app/                    # Next.js App Router（ページ・レイアウト）
 components/             # UI コンポーネント
   articles/             # 記事関連コンポーネント
   comments/             # コメント関連コンポーネント
+  likes/                # いいね関連コンポーネント
   tags/                 # タグ関連コンポーネント
   *.tsx                 # 汎用コンポーネント（レイアウト・共通 UI など）
 lib/
@@ -54,6 +55,7 @@ tests/                  # テストファイル（詳細は .claude/rules/testin
 - `keyArgs: false` を設定したフィールドを使う `useQuery` には必ず `fetchPolicy: 'cache-and-network'` を付与する（異なる `first` 値で同じキャッシュキーを共有するため、ネットワーク取得なしだと件数が不足することがある）
 - 新規ページネーション対応フィールド（connection type）を追加する際は `typePolicies` にも同様のエントリを追加すること
 - Rails の `ISO8601DateTime` / `ISO8601Date` スカラーは `string` にマッピング済み（`codegen.ts` の `scalars` を参照）。新しい日時スカラーを追加した場合も同様に設定すること
+- Mutation 後にリストキャッシュを即時更新したい場合は `optimisticResponse` + `cache.modify` を組み合わせる。`refetchQueries` よりも再フェッチなしで楽観的更新できるため、いいね等の即時 UI フィードバックに使う（実装例: `components/likes/LikeButton.tsx`）
 
 ## smarthr-ui
 

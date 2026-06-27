@@ -5,6 +5,7 @@ import { Button, Cluster, Stack, Text } from "smarthr-ui"
 import { DELETE_COMMENT } from "@/lib/queries/comment"
 import { GET_ARTICLE } from "@/lib/queries/article"
 import type { GetArticleQuery } from "@/lib/gql/graphql"
+import { LikeButton } from "@/components/likes/LikeButton"
 
 type Comment = NonNullable<
   NonNullable<GetArticleQuery['article']>['comments']>[number]
@@ -17,7 +18,7 @@ type Props = {
 
 export function CommentList({ comments, articleId, meId }: Props) {
   const [deleteComment] = useMutation(DELETE_COMMENT, {
-    refetchQueries: [{ query: GET_ARTICLE, variables: { id: articleId }}],
+    refetchQueries: [{ query: GET_ARTICLE, variables: { id: articleId } }],
   })
 
   if (comments.length === 0) {
@@ -43,8 +44,16 @@ export function CommentList({ comments, articleId, meId }: Props) {
               {new Date(comment.createdAt).toLocaleDateString('ja-JP')}
             </Text>
             <Text>{comment.body}</Text>
-            {meId && comment.user.id === meId && (
-              <Cluster justify="flex-end">
+            <Cluster justify="space-between" align="center">
+              <LikeButton
+                likeableId={comment.id}
+                likeableType="Comment"
+                likesCount={comment.likesCount}
+                likedByMe={comment.likedByMe}
+                cacheId={comment.id}
+                disabled={meId === comment.user.id}
+              />
+              {meId && comment.user.id === meId && (
                 <Button
                   size="S"
                   variant="danger"
@@ -54,8 +63,8 @@ export function CommentList({ comments, articleId, meId }: Props) {
                 >
                   削除
                 </Button>
-              </Cluster>
-            )}
+              )}
+            </Cluster>
           </Stack>
         </div>
       ))}

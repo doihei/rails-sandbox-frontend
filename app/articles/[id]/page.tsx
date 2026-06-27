@@ -20,6 +20,7 @@ import { LogoutButton } from "@/components/LogoutButton";
 import Link from "next/link";
 import { CommentList } from "@/components/comments/CommentList";
 import { CommentForm } from "@/components/comments/CommentForm";
+import { LikeButton } from "@/components/likes/LikeButton";
 
 const STATUS_LABEL: Record<string, { type: "green" | "grey"; text: string }> = {
   published: { type: "green", text: "公開済み" },
@@ -97,10 +98,20 @@ export default function ArticleDetailPage() {
                 <Heading>{article.title}</Heading>
                 <StatusLabel type={statusLabel.type}>{statusLabel.text}</StatusLabel>
               </Cluster>
-              <Text size="S" color="TEXT_GREY">
-                {article.user.name || article.user.email} ·{" "}
-                {new Date(article.createdAt).toLocaleDateString("ja-JP")}
-              </Text>
+              <Cluster align="center" justify="space-between">
+                <Text size="S" color="TEXT_GREY">
+                  {article.user.name || article.user.email} ·{" "}
+                  {new Date(article.createdAt).toLocaleDateString("ja-JP")}
+                </Text>
+                <LikeButton
+                  likeableId={article.id}
+                  likeableType="Article"
+                  likesCount={article.likesCount}
+                  likedByMe={article.likedByMe}
+                  cacheId={article.id}
+                  disabled={me?.id === article.user.id}
+                />
+              </Cluster>
             </Stack>
 
             {/* タグ */}
