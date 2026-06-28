@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -9,13 +9,13 @@ import {
   Stack,
   FormControl,
   Input,
-  Textarea,
   Button,
   Cluster,
   NotificationBar,
   Select,
   StatusLabel,
 } from "smarthr-ui";
+import { MarkdownEditorForm } from "@/components/markdown/MarkdownEditorForm";
 import { CREATE_ARTICLE, UPDATE_ARTICLE } from "@/lib/queries/article";
 import { GET_TAGS } from "@/lib/queries/tag";
 import { TokenInput } from "@/components/TokenInput";
@@ -60,9 +60,8 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
     setError,
   } = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
-    defaultValues: defaultValues ?? { status: "draft" },
+    defaultValues: { body: "", status: "draft", ...defaultValues },
   });
-
   const tagNames = useWatch({ control, name: "tagNames" }) ?? [];
 
   const { data: tagsData } = useQuery(GET_TAGS, { variables: { first: 200 }, fetchPolicy: 'cache-and-network' });
@@ -140,12 +139,18 @@ export function ArticleForm({ articleId, lockVersion, defaultValues }: Props) {
           statusLabels={requiredLabel}
           errorMessages={errors.body?.message}
         >
-          <Textarea
-            id="body"
-            {...register("body")}
-            error={!!errors.body}
-            width="100%"
-            rows={10}
+          <Controller
+            control={control}
+            name="body"
+            render={({ field }) => (
+              <MarkdownEditorForm
+                id="body"
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                error={!!errors.body}
+                rows={10}
+              />
+            )}
           />
         </FormControl>
 
