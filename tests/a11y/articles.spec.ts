@@ -47,6 +47,7 @@ test.describe('記事フォーム a11y', () => {
 test.describe('記事詳細 a11y', () => {
   test('違反がないこと', async ({ page }) => {
     await page.goto('/articles/1')
+    await page.waitForSelector('nav[aria-label="目次"]')
 
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])

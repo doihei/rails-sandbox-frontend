@@ -21,6 +21,8 @@ import Link from "next/link";
 import { CommentList } from "@/components/comments/CommentList";
 import { CommentForm } from "@/components/comments/CommentForm";
 import { LikeButton } from "@/components/likes/LikeButton";
+import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
+import { MarkdownToc } from "@/components/markdown/MarkdownToc";
 
 const STATUS_LABEL: Record<string, { type: "green" | "grey"; text: string }> = {
   published: { type: "green", text: "公開済み" },
@@ -80,7 +82,7 @@ export default function ArticleDetailPage() {
   }
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 16px" }}>
+    <main style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 16px" }}>
       {/* ナビゲーション */}
       <Cluster justify="space-between" align="center" style={{ marginBottom: "24px" }}>
         <Link href="/articles" style={{ fontSize: "14px", color: "#6b7280" }}>
@@ -89,6 +91,7 @@ export default function ArticleDetailPage() {
         <LogoutButton />
       </Cluster>
 
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 220px", gap: "32px", alignItems: "start" }}>
       <Stack gap="XL">
         <Base padding="XL" layer={1}>
           <Stack gap="L">
@@ -124,16 +127,8 @@ export default function ArticleDetailPage() {
             )}
 
             {/* 本文 */}
-            <div
-              style={{
-                lineHeight: 1.8,
-                color: "#374151",
-                whiteSpace: "pre-wrap",
-                borderTop: "1px solid #e5e7eb",
-                paddingTop: "24px",
-              }}
-            >
-              {article.body}
+            <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "24px" }}>
+              <MarkdownRenderer content={article.body} />
             </div>
 
             {/* オーナーのみ操作ボタン */}
@@ -171,6 +166,12 @@ export default function ArticleDetailPage() {
           </section>
         </Base>
       </Stack>
+
+      {/* 目次サイドバー */}
+      <aside style={{ position: "sticky", top: "24px" }}>
+        <MarkdownToc content={article.body} />
+      </aside>
+      </div>
 
       <ControlledActionDialog
         isOpen={deleteDialogOpen}

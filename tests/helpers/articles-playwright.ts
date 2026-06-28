@@ -29,7 +29,7 @@ export const MOCK_ARTICLE = {
     article: {
       id: '1',
       title: 'テスト記事',
-      body: 'テスト本文',
+      body: '# はじめに\n\nテスト本文です。\n\n## 詳細\n\n詳細の説明文。\n\n### まとめ\n\nまとめの文章。',
       status: 'published',
       lockVersion: 0,
       createdAt: '2024-01-01T00:00:00Z',
