@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "smarthr-ui/smarthr-ui.css";
+import "highlight.js/styles/github.css";
 import { Providers } from "@/components/Providers";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getToken } from "@/lib/auth";
