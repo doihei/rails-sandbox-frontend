@@ -34,10 +34,10 @@ test('記事作成フォーム バリデーションエラー', async ({ page })
   await expect(page).toHaveScreenshot('articles-new-validation-error.png', { fullPage: true })
 })
 
-// ── 記事詳細ページ（オーナー表示）───────────────────────
+// ── 記事詳細ページ（TOC 付き）───────────────────────────
 test('記事詳細ページ', async ({ page }) => {
   await page.goto('/articles/1')
-  // 記事タイトルが表示されるまで待つ
-  await page.waitForSelector('h1')
+  // TOC が描画されるまで待つ（マークダウンの見出しが body に含まれる前提）
+  await page.waitForSelector('nav[aria-label="目次"]')
   await expect(page).toHaveScreenshot('articles-detail.png', { fullPage: true })
 })
