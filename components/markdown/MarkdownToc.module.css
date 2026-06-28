@@ -1,0 +1,11 @@
+.link {
+  display: block;
+  padding: 4px 8px;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.active {
+  border-left-color: var(--color-text-link);
+}
