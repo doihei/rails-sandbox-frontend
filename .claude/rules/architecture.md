@@ -13,6 +13,9 @@
 | Playwright + axe-core | a11y テスト |
 | Playwright | VRT（スクリーンショット回帰テスト） |
 | react-hook-form + zod | フォームバリデーション |
+| react-markdown + remark-gfm | マークダウンレンダリング（GFM 拡張対応） |
+| rehype-highlight + highlight.js | コードブロックのシンタックスハイライト |
+| rehype-sanitize | マークダウン出力の XSS サニタイズ |
 
 ## ディレクトリ構成
 
@@ -29,6 +32,7 @@ app/                    # Next.js App Router（ページ・レイアウト）
     [id]/               # タグ別記事一覧ページ
 components/             # UI コンポーネント
   articles/             # 記事関連コンポーネント
+  markdown/             # マークダウン関連コンポーネント（MarkdownRenderer / MarkdownEditorForm / MarkdownToc）
   comments/             # コメント関連コンポーネント
   likes/                # いいね関連コンポーネント
   tags/                 # タグ関連コンポーネント
@@ -74,3 +78,10 @@ tests/                  # テストファイル（詳細は .claude/rules/testin
 - `Select` のオプションは `children` ではなく `options={[{ value, label }]}` で渡す（`label` プロパティが表示テキストになる）
 - `AnchorButton elementAs={Link}` は Client Component 内でのみ使用可能。Server Component から関数を props として渡すと Next.js がエラーを出す
 - Apollo ミューテーションのレスポンスには「更新したフィールドをすべて含める」こと。含めないフィールドはミューテーション後もキャッシュが更新されず、画面に古い値が残る
+
+## マークダウンコンポーネント
+
+- スタイルは `*.module.css` で管理する。remark-gfm が付与するクラス（`contains-task-list` / `task-list-item` など）は CSS Modules がハッシュ化するため、`:global(.classname)` で参照すること
+- `rehype-sanitize` のデフォルトスキーマを拡張する場合は `MarkdownRenderer.tsx` 内の `sanitizeSchema` に集約する（例：タスクリストの `input` 要素許可、`code`/`span` の `className` 許可）
+- 見出し ID の生成は `components/markdown/slugify.ts` の `slugify()` を使う。`MarkdownRenderer`（DOM の `id` 属性）と `MarkdownToc`（アンカーリンクの `href`）で共有することで両者の一致を保証する
+- `MarkdownEditorForm` を `FormControl` 内で使う場合は `Controller`（react-hook-form）で登録すること。`register()` を省いて `useWatch` + `setValue` だけにすると、フィールド値が `undefined` のまま Zod に渡りカスタムバリデーションメッセージが表示されない

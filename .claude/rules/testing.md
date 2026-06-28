@@ -19,6 +19,7 @@ paths:
   - `tests/components/comments/` — コメント関連コンポーネントのテスト
   - `tests/components/likes/` — いいね関連コンポーネントのテスト
   - `tests/components/tags/` — タグ関連コンポーネントのテスト
+  - `tests/components/markdown/` — マークダウン関連コンポーネントのテスト
 - テスト内のインポートは `@/` エイリアスを使う（相対パス不可）
 - Playwright の `*.spec.ts` は Vitest が誤検出するため `vitest.config.ts` の `exclude` に `tests/a11y/**` と `tests/vrt/**` を設定済み。新たに Playwright テストを追加する場合もこれらのディレクトリに配置すること
 
